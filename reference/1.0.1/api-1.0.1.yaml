@@ -129,61 +129,25 @@ paths:
       summary: Search Admin Message details
       operationId: searchAdminMessageDetails
       parameters:
-        - $ref: '#/components/parameters/messageStatus'
-        - $ref: '#/components/parameters/messageName'
-        - $ref: '#/components/parameters/messageDirection'
-        - $ref: '#/components/parameters/eventCode'
-        - $ref: '#/components/parameters/fromDate'
-        - $ref: '#/components/parameters/toDate'
-        - $ref: '#/components/parameters/pageIndex'
-        - $ref: '#/components/parameters/pageSize'
-        - $ref: '#/components/parameters/orderBy'
-        - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/messageStatus'
+      - $ref: '#/components/parameters/messageName'
+      - $ref: '#/components/parameters/messageDirection'
+      - $ref: '#/components/parameters/eventCode'
+      - $ref: '#/components/parameters/fromDate'
+      - $ref: '#/components/parameters/toDate'
+      - $ref: '#/components/parameters/pageIndex'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/orderBy'
+      - $ref: '#/components/parameters/order'
         
       responses:
         200:
           description: Search Admin Message Details
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/AdminMessageSearchDetails'
-          examples:
-            application/json: {
-             "AdminMessageSearchDetail": [
-             {
-             "adminMessageResponse": {
-             "msgSeqId": 80303,
-             "msgId": "580094",
-             "msgType": "Admi.004 - System Event Notification",
-             "direction": "Incoming",
-             "status": "ACTC",
-             "sendRecvDate": "10/05/2021",
-             "eventCode": "994 - Prefunded Balance Breach Notification"
-             },
-             "adminMessageDetails": {
-             "msgSeqId": 80303,
-             "msgType": "Admi.004 - System Event Notification",
-             "msgXml": "<!-- 994 Tenant 1 Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021092300000000ZFA6896602</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-09-23T10:23:45</head:CreDt>\r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>994</ne:EvtCd>\r\n <ne:EvtParam>580094</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>PAIGE ROWE994</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>PAYMENT RJCT</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>99999990</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>M2021042610211110101BRT00000001</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>2500</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-09-02T00:29:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
-             }
-             },
-             {
-             "adminMessageResponse": {
-             "msgSeqId": 80283,
-             "msgId": "580093",
-             "msgType": "Admi.004 - System Event Notification",
-             "direction": "Incoming",
-             "status": "ACTC",
-             "sendRecvDate": "10/05/2021",
-             "eventCode": "993 - Available Prefunded Balance Warning Notification"
-             },
-             "adminMessageDetails": {
-             "msgSeqId": 80283,
-             "msgType": "Admi.004 - System Event Notification",
-             "msgXml": "<!-- 993 Tenant 1 EXCEEDED Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021073000000000ZHA6896403</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-07-30T14:52:45</head:CreDt>\r\n \r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>993</ne:EvtCd>\r\n <ne:EvtParam>580093</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>B ROWE993</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>EXCEEDED</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>1000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>5000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>95000000</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-07-30T14:52:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
-             }
-             }
-             ]
-             }
+              schema: {$ref: '#/components/schemas/AdminMessageSearchDetails'}
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/AdminMessageSearchDetailResponse'}
  
  
         500:
@@ -593,3 +557,40 @@ components:
       schema:
         type: string
         enum: [asc, desc] 
+  examples:
+    AdminMessageSearchDetailResponse:
+      value:
+        "AdminMessageSearchDetail": [
+             {
+             "adminMessageResponse": {
+             "msgSeqId": 80303,
+             "msgId": "580094",
+             "msgType": "Admi.004 - System Event Notification",
+             "direction": "Incoming",
+             "status": "ACTC",
+             "sendRecvDate": "10/05/2021",
+             "eventCode": "994 - Prefunded Balance Breach Notification"
+             },
+             "adminMessageDetails": {
+             "msgSeqId": 80303,
+             "msgType": "Admi.004 - System Event Notification",
+             "msgXml": "<!-- 994 Tenant 1 Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021092300000000ZFA6896602</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-09-23T10:23:45</head:CreDt>\r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>994</ne:EvtCd>\r\n <ne:EvtParam>580094</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>PAIGE ROWE994</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>PAYMENT RJCT</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>99999990</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>M2021042610211110101BRT00000001</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>2500</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-09-02T00:29:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
+             }
+             },
+             {
+             "adminMessageResponse": {
+             "msgSeqId": 80283,
+             "msgId": "580093",
+             "msgType": "Admi.004 - System Event Notification",
+             "direction": "Incoming",
+             "status": "ACTC",
+             "sendRecvDate": "10/05/2021",
+             "eventCode": "993 - Available Prefunded Balance Warning Notification"
+             },
+             "adminMessageDetails": {
+             "msgSeqId": 80283,
+             "msgType": "Admi.004 - System Event Notification",
+             "msgXml": "<!-- 993 Tenant 1 EXCEEDED Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021073000000000ZHA6896403</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-07-30T14:52:45</head:CreDt>\r\n \r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>993</ne:EvtCd>\r\n <ne:EvtParam>580093</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>B ROWE993</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>EXCEEDED</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>1000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>5000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>95000000</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-07-30T14:52:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
+             }
+             }
+             ]
