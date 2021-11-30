@@ -34,11 +34,11 @@ info:
   description: To onboard properly into the Fiserv Developer Studio as a tenant each
     product must support these APIs so that we can retrieve product specific API specifications
     and documentation.
-  version: 1.0.0
+  version: 1.0.1
 servers:
   - url: https://tenants.fiserv.com/
 paths:
-  /v1/products:
+  /v2/products:
     get:
       tags:
         - Tenant
@@ -59,7 +59,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/TenantProviderResponse'
-  /v1/apis:
+  /v2/apis:
     post:
       tags:
         - Specs
@@ -79,7 +79,7 @@ paths:
           description: ""
           content: {}
       x-codegen-request-body-name: Body
-  /v1/docs:
+  /v2/docs:
     get:
       tags:
         - Documents
@@ -99,7 +99,7 @@ paths:
           description: ""
           content: {}
       x-codegen-request-body-name: Body
-  /v1/layouts:
+  /v2/layouts:
     get:
       tags:
         - Layout
@@ -120,43 +120,42 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/PageLayoutResponse'
-  /live:
+  /admin-message/messages-search-details:
     get:
       tags:
-        - HealthCheck
-      x-group-name: HealthCheck
-      x-proxy-name: live
-      summary: Health check probes.
-      operationId: healthCheckId
-      x-links: 
-        link1: 
-          description: Developer Studio
-          flag: external
-          url:  'https://dev-developerstudio.fiserv.com/'
-        link2: 
-          description: Setup tenant
-          flag: internal
-          url:  '../docs?path=docs/getting-started/setup-tenant/setup-tenant.md'
-        link3: 
-          description: Fiserv Portal
-          flag: external
-          url:  'https://fiserv.com'
+        -  Message
+      x-group-name: Admin
+      x-proxy-name: Search
+      summary: Search Admin Message details
+      operationId: searchAdminMessageDetails
+      parameters:
+      - $ref: '#/components/parameters/messageStatus'
+      - $ref: '#/components/parameters/messageName'
+      - $ref: '#/components/parameters/messageDirection'
+      - $ref: '#/components/parameters/eventCode'
+      - $ref: '#/components/parameters/fromDate'
+      - $ref: '#/components/parameters/toDate'
+      - $ref: '#/components/parameters/pageIndex'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/orderBy'
+      - $ref: '#/components/parameters/order'
+        
       responses:
         200:
-          description: Health check.
+          description: Search Admin Message Details
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/LiveProbeResponse'
-  
+              schema: {$ref: '#/components/schemas/AdminMessageSearchDetails'}
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/AdminMessageSearchDetailResponse'}
+ 
+ 
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body 
 components:
   schemas:
-    LiveProbeResponse:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Message
     PageLayoutResponse:
       type: array
       items:
@@ -322,6 +321,116 @@ components:
         title:
           type: string
           description: Title
+    AdminMessageConfig:
+      type: object
+      properties:
+        i18n:
+          $ref: '#/components/schemas/I18n'
+        labelValueBean:
+          $ref: '#/components/schemas/LabelValueBean'
+    SearchAdminMessageResult: 
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+        adminMessageResponse:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageResponse'
+      title: SearchAdminMessageResult 
+    AdminMessageSearchDetails:
+      type: object
+      properties:
+        AdminMessageSearchDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageSearchDetail'
+      title: AdminMessageSearchDetails 
+    AdminMessageSearchDetail:
+      type: object
+      properties:
+        adminMessageResponse:
+          $ref: '#/components/schemas/AdminMessageResponse'
+        adminMessageDetails:
+          $ref: '#/components/schemas/AdminMessageDetails'   
+      title: AdminMessageSearchDetail 
+    AdminMessageResponse:
+      type: object
+      properties:
+        msgSeqId:
+          type: integer
+          format: int64
+        msgId:
+          type: string
+        msgType:
+          type: string
+        direction:
+          type: string
+        status:
+          type: string
+        sendRecvDate:
+          type: string
+        eventCode:
+          type: string
+       
+      title: AdminMessageRequest
+    AdminMessageDetails:
+      type: object
+      properties:
+        msgSeqId:
+          type: integer
+          format: int64
+        msgType:
+          type: string
+        msgXml:
+          type: string
+      title: AdminMessageDetails
+    AdminMessageDetailsResult:
+      type: object
+      properties:
+        AdminMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageDetails'
+    InterlinkedAdminMessageResult:
+      type: object
+      properties:
+        AdminMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageDetails'
+    I18n:
+      type: object
+      additionalProperties:
+        type: string
+    LabelValueBean:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/LabelValue'
+    LabelValue:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+      title: LabelValue
+    Pager:
+      type: object
+      properties:
+        pageIndex:
+          type: integer 
+        pageSize:
+          type: integer  
+        orderBy:
+          type: string
+        order:
+          enum:
+            - asc
+            - desc
   responses:
     apiSpecResponseWrapper:
       description: OpenAPI Spec for the APIs. 
@@ -329,18 +438,6 @@ components:
     docsResponseWrapper:
       description: Markdown files.
       content: {}
-    liveResponse:
-      description: Health check.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LiveProbeResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/LiveProbeResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/LiveProbeResponse'
     productPage:
       description: This text will appear as description of your response body. 
       content:
@@ -369,3 +466,131 @@ components:
     basic:
       type: http
       scheme: basic
+  parameters:
+    msgSeqId:
+      name: msgSeqId
+      in: path
+      description: MessageSeqId
+      required: true
+      schema:
+        type: integer
+        format: int64  
+    msgType:
+      name: msgType
+      in: query
+      description: Search by Message Type
+      schema:
+        type: string
+    messageStatus:
+      name: messageStatus
+      in: query
+      description: Search by Message Status
+      required: false
+      schema:
+        type: string
+        enum: [ACTC, RCVD, RJCT, SENT]
+    messageName:
+      name: messageName
+      in: query
+      description: Search by Message Name
+      required: false
+      schema:
+        type: string
+        enum: [ADMI.002, ADMI.004, ADMN.001, ADMN.002, ADMN.003, ADMN.004, ADMN.005, ADMN.006]
+    messageDirection:
+      name: messageDirection
+      in: query
+      description: Search by Message Direction
+      required: false
+      schema:
+        type: string
+        enum: [I, O]
+    eventCode:
+      name: eventCode
+      in: query
+      description: Search by Message Event Code
+      schema:
+        type: string
+        enum: ["960", "961", "971", "972", "975", "976", "981", "982", "993", "994", "996", "998", "999"]
+    fromDate:
+      name: fromDate
+      in: query
+      description: Search by Date
+      required: false
+      schema:
+        type: string
+        format: date
+    toDate:
+      name: toDate
+      in: query
+      description: Search by Date
+      required: false
+      schema:
+        type: string
+        format: date
+    pageIndex:
+      name: pageIndex
+      in: query
+      description: Page Index
+      required: false
+      schema:
+        type: integer
+    pageSize:
+      name: pageSize
+      in: query
+      description: Page Size
+      required: false
+      schema:
+        type: integer
+    orderBy:
+      name: orderBy
+      in: query
+      description: Order By
+      required: false
+      schema:
+        type: string
+    order:
+      name: order
+      in: query
+      description: Page Size
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc] 
+  examples:
+    AdminMessageSearchDetailResponse:
+      value:
+        "AdminMessageSearchDetail": [
+             {
+             "adminMessageResponse": {
+             "msgSeqId": 80303,
+             "msgId": "580094",
+             "msgType": "Admi.004 - System Event Notification",
+             "direction": "Incoming",
+             "status": "ACTC",
+             "sendRecvDate": "10/05/2021",
+             "eventCode": "994 - Prefunded Balance Breach Notification"
+             },
+             "adminMessageDetails": {
+             "msgSeqId": 80303,
+             "msgType": "Admi.004 - System Event Notification",
+             "msgXml": "<!-- 994 Tenant 1 Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021092300000000ZFA6896602</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-09-23T10:23:45</head:CreDt>\r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>994</ne:EvtCd>\r\n <ne:EvtParam>580094</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>PAIGE ROWE994</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>PAYMENT RJCT</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>99999990</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>M2021042610211110101BRT00000001</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>2500</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-09-02T00:29:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
+             }
+             },
+             {
+             "adminMessageResponse": {
+             "msgSeqId": 80283,
+             "msgId": "580093",
+             "msgType": "Admi.004 - System Event Notification",
+             "direction": "Incoming",
+             "status": "ACTC",
+             "sendRecvDate": "10/05/2021",
+             "eventCode": "993 - Available Prefunded Balance Warning Notification"
+             },
+             "adminMessageDetails": {
+             "msgSeqId": 80283,
+             "msgType": "Admi.004 - System Event Notification",
+             "msgXml": "<!-- 993 Tenant 1 EXCEEDED Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021073000000000ZHA6896403</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-07-30T14:52:45</head:CreDt>\r\n \r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>993</ne:EvtCd>\r\n <ne:EvtParam>580093</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>B ROWE993</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>EXCEEDED</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>1000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>5000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>95000000</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-07-30T14:52:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
+             }
+             }
+             ]
