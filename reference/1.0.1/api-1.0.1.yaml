@@ -158,6 +158,8 @@ paths:
     get:
       tags:
       -  Message 
+      x-group-name: Business
+      x-proxy-name: Search
       summary: Search Business Message With Details 
       operationId: searchBusinessMessageWithDetails
       parameters:
