@@ -465,9 +465,9 @@ components:
       type: object
       properties:
         i18n:
-          $ref: 'GlobalApi.yaml#/components/schemas/I18n'
+          $ref: '#/components/schemas/I18n'
         labelValueBean:
-          $ref: 'GlobalApi.yaml#/components/schemas/LabelValueBean'
+          $ref: '#/components/schemas/LabelValueBean'
     BusinessMessageSearchResult: 
       type: object
       properties:
