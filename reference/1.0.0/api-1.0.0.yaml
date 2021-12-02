@@ -190,7 +190,7 @@ paths:
     get:
       tags:
       - Participant Status
-      x-group-name: Get Participant Status
+      x-group-name: Participant Status
       x-proxy-name: Get
       summary: SignIn/SignOut Statuses for the signedIn Tenant
       operationId: getParticipantStatus
@@ -209,7 +209,7 @@ paths:
     put:
       tags:
       - Participant Status
-      x-group-name: Put Participant Status
+      x-group-name: Participant Status
       x-proxy-name: Put
       summary: Put Request in RTB HUB Service
       operationId: updateParticipantStatus
