@@ -186,8 +186,77 @@ paths:
           description: Internal Server error on xroads
           content: {}
       x-codegen-request-body-name: body
+  /participant-status:
+    get:
+      tags:
+      - Participant Status
+      summary: SignIn/SignOut Statuses for the signedIn Tenant
+      operationId: getParticipantStatus
+      responses:
+        200:
+          description: Participant Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParticipantStatusResult'
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+
+    put:
+      tags:
+      - Participant Status
+      summary: Put Request in RTB HUB Service
+      operationId: updateParticipantStatus
+      parameters:
+        - in: query
+          name: signedIn
+          required: true
+          schema:
+            type: boolean
+      responses:
+        204:
+          description: Request placed in queue
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+  /participant-status/system-status:
+    get:
+      tags:
+      - System Status
+      summary: Home screen system status
+      operationId: getSystemStatus
+      responses:
+        200:
+          description: System Status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemStatusResult'
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body
 components:
   schemas:
+    ParticipantStatusResult: 
+      type: object
+      properties:  
+        signedOff:
+          type: boolean
+        signonoffRequestStatus:
+          type: string
+        signOnOffButtonEnabled:
+          type: boolean
+    SystemStatusResult: 
+      type: object
+      properties:  
+        currentStatus:
+          type: string
+        suspended:
+          type: boolean
     PageLayoutResponse:
       type: array
       items:
