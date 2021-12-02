@@ -231,6 +231,8 @@ paths:
       tags:
       - System Status
       summary: Home screen system status
+      x-group-name: System
+      x-proxy-name: Status
       operationId: getSystemStatus
       responses:
         200:
