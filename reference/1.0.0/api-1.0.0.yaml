@@ -123,7 +123,7 @@ paths:
   /admin-message/messages-search-details:
     get:
       tags:
-        -  Message
+        -  AdminMessage
       x-group-name: Admin
       x-proxy-name: Search
       summary: Search Admin Message details
@@ -157,7 +157,7 @@ paths:
   /business-message/message-with-details:
     get:
       tags:
-      -  Message 
+      -  BusinessMessage 
       x-group-name: Business
       x-proxy-name: Search
       summary: Search Business Message With Details 
