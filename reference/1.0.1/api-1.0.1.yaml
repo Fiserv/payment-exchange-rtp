@@ -38,88 +38,6 @@ info:
 servers:
   - url: https://tenants.fiserv.com/
 paths:
-  /v2/products:
-    get:
-      tags:
-        - Tenant
-      x-group-name: Tenant
-      x-proxy-name: products
-      summary: Returns tenant provider API.
-      operationId: TenantProviderID
-      responses:
-        200:
-          description: Tenant provider response. <a href="https://fiserv.com" rel="noopener noreferrer" target="_blank">external link</a> <a href="../docs?path=docs/getting-started/setup-tenant/setup-tenant.md">Setup Tenant</a>
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-            text/yaml:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-  /v2/apis:
-    post:
-      tags:
-        - Specs
-      x-group-name: Specs
-      x-proxy-name: apis
-      summary: Returns OpenAPI Spec.
-      operationId: APISpecProviderId
-      requestBody:
-        description: Filter Request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SpecsFilterRequest'
-        required: false
-      responses:
-        200:
-          description: ""
-          content: {}
-      x-codegen-request-body-name: Body
-  /v2/docs:
-    get:
-      tags:
-        - Documents
-      x-group-name: Documents
-      x-proxy-name: docs
-      summary: Returns Docs in markdown format.
-      operationId: DocsAPIId
-      parameters:
-        - in: query
-          name: path
-          schema:
-            type: string
-          required: true
-          description: Markdown document path
-      responses:
-        200:
-          description: ""
-          content: {}
-      x-codegen-request-body-name: Body
-  /v2/layouts:
-    get:
-      tags:
-        - Layout
-      x-group-name: Layout
-      x-proxy-name: layouts
-      summary: Returns the product page layout.
-      operationId: LayoutAPIId
-      responses:
-        200:
-          description: This text will appear as description of your response body.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-            text/yaml:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
   /admin-message/messages-search-details:
     get:
       tags:
@@ -139,6 +57,7 @@ paths:
       - $ref: '#/components/parameters/pageSize'
       - $ref: '#/components/parameters/orderBy'
       - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/AuthorizationHeader'
         
       responses:
         200:
@@ -174,6 +93,7 @@ paths:
         - $ref: '#/components/parameters/pageSize'
         - $ref: '#/components/parameters/orderBy'
         - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
         200:
           description: Search Business Message With Details
@@ -191,9 +111,11 @@ paths:
       tags:
       - Participant Status
       x-group-name: Participant Status
-      x-proxy-name: Get
+      x-proxy-name: Get Status
       summary: SignIn/SignOut Statuses for the signedIn Tenant
       operationId: getParticipantStatus
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
         200:
           description: Participant Status
@@ -210,7 +132,7 @@ paths:
       tags:
       - Participant Status
       x-group-name: Participant Status
-      x-proxy-name: Put
+      x-proxy-name: Save Status
       summary: Put Request in RTB HUB Service
       operationId: updateParticipantStatus
       parameters:
@@ -219,6 +141,7 @@ paths:
           required: true
           schema:
             type: boolean
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
         204:
           description: Request placed in queue
@@ -234,6 +157,8 @@ paths:
       x-group-name: System Status
       x-proxy-name: Status
       operationId: getSystemStatus
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
         200:
           description: System Status
@@ -262,172 +187,7 @@ components:
         currentStatus:
           type: string
         suspended:
-          type: boolean
-    PageLayoutResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          hero:
-            type: array
-            items:
-              type: object
-              properties:
-                descrption:
-                  type: string
-                  description: Descrption
-                image:
-                  type: string
-                  description: Image
-            description: Hero
-          journey Cards:
-            type: array
-            items:
-              type: object
-              properties:
-                journeyCard:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      contextualNavigationCards:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            contextualNavigationCard:
-                              type: array
-                              items:
-                                type: object
-                                properties:
-                                  description:
-                                    type: string
-                                    description: Description
-                                  link:
-                                    type: array
-                                    items:
-                                      type: object
-                                      properties:
-                                        type:
-                                          type: string
-                                          description: Type
-                                        uri:
-                                          type: string
-                                          description: URI
-                                    description: Link
-                                  title:
-                                    type: string
-                                    description: Title
-                              description: ContextualNavigationCard
-                        description: ContextualNavigationCards
-                      description:
-                        type: string
-                        description: Description
-                      link:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              description: Type
-                            uri:
-                              type: string
-                              description: URI
-                        description: Link
-                      title:
-                        type: string
-                        description: Title
-                  description: JourneyCard
-            description: JourneyCards
-    SpecsFilterRequest:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name
-              subcategories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Name
-                description: Subcategories
-          description: Categories
-    TenantProviderResponse:
-      type: object
-      properties:
-        brand:
-          type: string
-          description: Brand
-        brandDescription:
-          type: string
-          description: BrandDescription
-        brandLogoURL:
-          type: string
-          description: BrandLogoURL
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name
-              subcategories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Name
-                    value:
-                      type: string
-                      description: Value
-                description: Subcategories
-              value:
-                type: string
-                description: Value
-          description: Categories
-        name:
-          type: string
-          description: Name
-        product:
-          type: object
-          properties:
-            apiSpecification:
-              type: string
-              description: APISpecification 
-            description:
-              type: string
-              description: Description
-            documentation:
-              type: string
-              description: Documentation
-            featured:
-              type: boolean
-              description: Featured
-            layout:
-              type: string
-              description: Layout
-            logoURL:
-              type: string
-              description: LogoURL
-          description: Product
-        solution:
-          type: string
-          description: Solution
-        title:
-          type: string
-          description: Title
+          type: boolean       
     AdminMessageConfig:
       type: object
       properties:
@@ -500,13 +260,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdminMessageDetails'
-    InterlinkedAdminMessageResult:
-      type: object
-      properties:
-        AdminMessageDetails:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdminMessageDetails'
     I18n:
       type: object
       additionalProperties:
@@ -537,25 +290,7 @@ components:
         order:
           enum:
             - asc
-            - desc
-    BusinessMessageConfig:
-      type: object
-      properties:
-        i18n:
-          $ref: '#/components/schemas/I18n'
-        labelValueBean:
-          $ref: '#/components/schemas/LabelValueBean'
-    BusinessMessageSearchResult: 
-      type: object
-      properties:
-        totalCount:
-          type: integer
-          format: int64
-        businessMessageResult:
-          type: array
-          items:
-            $ref: '#/components/schemas/BusinessMessageSearch'
-      title: BusinessMessageSearchResult
+            - desc    
     BusinessMessageSearchWithDetailsResult: 
       type: object
       properties:
@@ -580,26 +315,6 @@ components:
           items:
             $ref: '#/components/schemas/BusinessMessageDetails'
       title: BusinessMessageWithDetail
-    PaymentDetails:
-      type: object
-      properties:
-        accNumber:
-          type: string
-        instrId:
-          type: string
-        amount:
-          type: number
-      title: PaymentDetails
-    MessageDetails:
-      type: object
-      properties:
-        messageName:
-          type: string
-        messageDirection:
-          type: string
-        messageStatus:
-          type: string
-      title: MessageDetails
     BusinessMessageSearch:
       type: object
       properties:
@@ -630,12 +345,6 @@ components:
         intrBkSttlmAmt:
           type: number
       title: BusinessMessageSearch
-    DecryptedCreditActNum:
-      type: object
-      properties:
-        decryptAcct:
-          type: string
-      title: decryptedCreditActNum
     BusinessMessageDetails:
       type: object
       properties:
@@ -644,57 +353,8 @@ components:
         msgType:
           type: string
       title: BusinessMessageDetails
-    InterlinkedBusinessRequest:
-      type: object
-      properties:
-       msgSeqId:
-          type: integer
-          format: int64
-       msgType:
-          type: string
-       msgXml:
-          type: string
-      title: InterlinkedBusinessRequest
-    InterlinkedBusinessRequestResult:
-      type: object
-      properties:
-        interlinkedBusinessRequests:
-          type: array
-          items:
-            $ref: '#/components/schemas/InterlinkedBusinessRequest'
-      title: InterlinkedBusinessRequestResult
-    
-  responses:
-    apiSpecResponseWrapper:
-      description: OpenAPI Spec for the APIs. 
-      content: {}
-    docsResponseWrapper:
-      description: Markdown files.
-      content: {}
-    productPage:
-      description: This text will appear as description of your response body. 
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-    tenant:
-      description: This text will appear as description of your response body. 
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
+
+            
   securitySchemes:
     basic:
       type: http
@@ -844,6 +504,15 @@ components:
       schema:
         type: number
         default: 6652
+    AuthorizationHeader:
+      x-model-version: 1.0
+      name: Authorization
+      schema: {type: string}
+      in: header
+      required: true
+      description: Authorization header used to ensure the request has not been tampered
+        with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For
+        more information, refer to the supporting documentation on the Developer Portal.
 
   examples:
     BusinessMessageWithDetailsResponse:
