@@ -170,8 +170,160 @@ paths:
           description: Internal Server error on RTP
           content: {}
       x-codegen-request-body-name: body
+  /payment-initiation-message/create-payment:
+    post:
+      tags:
+      - Create Payment
+      summary: Create Payment 
+      operationId: createPayment
+      requestBody:
+        description: Create Payment Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequests'
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/CreatePaymentRequest'}
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtlReqId'
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/CreatePaymentResponse'}
+          
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
+  /payment-initiation-message/payment-enquiry/{externalReqId}:
+    get:
+      tags:
+      - Payment Enquiry
+      summary: Payment Enquiry
+      operationId: paymentEnquiry
+      parameters:
+        - $ref: '#/components/parameters/externalReqId'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentEnquiryDto'
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/PaymentEnquiryResponse'}  
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body 
+security:
+  - bearerAuth: []
 components:
   schemas:
+    ExtlReqId:
+      type: integer
+      format: int64
+    PaymentRequests:
+      type: object
+      properties:
+        PaymentRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentRequest'
+      title: PaymentRequests
+    PaymentRequest:
+      type: object
+      required:
+       - ccsIdentifier
+       - paymentDate
+       - transactionAmount
+       - transactionID
+       - paymentMethod
+       - paymentType
+       - originatorName
+       - debitAccountNumber
+       - endToEndID
+       - beneficiaryBankABANumber
+       - beneficiaryBankName
+       - beneficiaryName
+       - instructionType
+      properties:
+        ccsIdentifier:
+          type: integer
+          format: int64
+          maxLength: 35
+        paymentDate:
+          type: string
+          format: date 
+        transactionAmount:
+          type: integer
+          format: int64
+          maxLength: 18
+        transactionID:
+          type: integer
+          format: int64
+          maxLength: 35
+        paymentMethod:
+          type: string
+          maxLength: 3
+        paymentType:
+          type: string
+          maxLength: 4
+        originatorName:
+          type: string
+          maxLength: 70
+        originatorAddressblock:
+          type: string
+        debitAccountNumber:
+          type: integer
+          format: int64
+          maxLength: 35
+        endToEndID:
+          type: integer
+          format: int64
+          maxLength: 35
+        beneficiaryBankABANumber:
+          type: integer
+          format: int64
+        beneficiaryBankName:
+          type: string
+          maxLength: 70
+        beneficiaryName:
+          type: string
+          maxLength: 70
+        beneficiaryAddressblock:
+          type: string
+          maxLength: 70
+        additionalInformationforBeneficiary:
+          type: integer
+          format: int64
+        instructionType:
+          type: integer
+          format: int64  
+    PaymentEnquiryDto:
+      type: object
+      properties:
+        extlReqId:
+          type: integer
+          format: int64
+          title: id
+        ExtlReqDtlDto:  
+          type: array
+          items:
+           $ref: '#/components/schemas/ExtlReqDtlDto'
+      title: PaymentEnquiryDto
+    ExtlReqDtlDto:  
+      type: object
+      properties:
+        status:
+          type: string
+        extlReqDtlId:  
+          type: integer
+          format: int64      
+      title: ExternalRequestDtlDto
     ParticipantStatusResult: 
       type: object
       properties:  
@@ -356,10 +508,22 @@ components:
 
             
   securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
     basic:
       type: http
       scheme: basic
   parameters:
+    externalReqId:
+      name: externalReqId
+      in: path
+      description: ExternalRequestId
+      required: true
+      schema:
+        type: integer
+        format: int64 
     msgSeqId:
       name: msgSeqId
       in: path
@@ -515,6 +679,64 @@ components:
         more information, refer to the supporting documentation on the Developer Portal.
 
   examples:
+    CreatePaymentRequest:
+      value:
+        "PaymentRequest": [
+        {
+          "ccsIdentifier": "1",
+          "paymentDate": "2021-02-15",
+          "transactionAmount": "1000",
+          "transactionID": "123",
+          "paymentMethod": "Cdt",
+          "paymentType": "Onl",
+          "originatorName": "Test",
+          "originatorAddressblock": "",
+          "debitAccountNumber": "3452",
+          "endToEndID": "234",
+          "beneficiaryBankABANumber": "456",
+          "beneficiaryBankName": "BOFA",
+          "beneficiaryName": "ABC",
+          "beneficiaryAddressblock": "",
+          "additionalInformationforBeneficiary": "",
+          "instructionType":"1"
+        },
+        {
+          "ccsIdentifier": "2",
+          "paymentDate": "2021-11-29",
+          "transactionAmount": "1000",
+          "transactionID": "1234",
+          "paymentMethod": "Cdt",
+          "paymentType": "Onl",
+          "originatorName": "Test",
+          "originatorAddressblock": "",
+          "debitAccountNumber": "3452",
+          "endToEndID": "234",
+          "beneficiaryBankABANumber": "456",
+          "beneficiaryBankName": "BOFA",
+          "beneficiaryName": "ABC",
+          "beneficiaryAddressblock": "",
+          "additionalInformationforBeneficiary": "",
+          "instructionType":"1"
+        }
+    ]
+    CreatePaymentResponse:
+      value:
+        1
+    PaymentEnquiryResponse:
+      value:
+        "PaymentEnquiryDto": {
+          "extlReqId": "1",
+          "extlReqDtlDto": [
+            {
+            "status": "RCVD",
+            "extlReqDtlId": "1"
+            },
+            {
+            "status": "QUEUED",
+            "extlReqDtlId": "2"
+            }
+        ]
+        }
     BusinessMessageWithDetailsResponse:
       value:
         {
