@@ -174,14 +174,15 @@ paths:
     post:
       tags:
       - Create Payment
+      x-group-name: payment-initiation-message
+      x-proxy-name: create-payment
       summary: Create Payment 
       operationId: createPayment
       requestBody:
         description: Create Payment Request
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentRequests'
+            schema: {$ref: '#/components/schemas/PaymentRequests'}
               examples:
                 Capture: {summary: CaptureResponse, $ref: '#/components/examples/CreatePaymentRequest'}
       responses:
@@ -189,8 +190,7 @@ paths:
           description: OK.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ExtlReqId'
+              schema: {$ref: '#/components/schemas/ExtlReqId'}
               examples:
                 Capture: {summary: CaptureResponse, $ref: '#/components/examples/CreatePaymentResponse'}
           
@@ -202,6 +202,8 @@ paths:
     get:
       tags:
       - Payment Enquiry
+      x-group-name: payment-initiation-message
+      x-proxy-name: payment-enquiry
       summary: Payment Enquiry
       operationId: paymentEnquiry
       parameters:
@@ -211,8 +213,7 @@ paths:
           description: OK.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentEnquiryDto'
+              schema: {$ref: '#/components/schemas/PaymentEnquiryDto'}
               examples:
                 Capture: {summary: CaptureResponse, $ref: '#/components/examples/PaymentEnquiryResponse'}  
         500:
