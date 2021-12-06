@@ -174,10 +174,12 @@ paths:
     post:
       tags:
       - Create Payment
-      x-group-name: payment-initiation-message
-      x-proxy-name: create-payment
+      x-group-name: Payment Initiation Message
+      x-proxy-name: Create Payment
       summary: Create Payment 
       operationId: createPayment
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
       requestBody:
         description: Create Payment Request
         content:
@@ -202,12 +204,13 @@ paths:
     get:
       tags:
       - Payment Enquiry
-      x-group-name: payment-initiation-message
-      x-proxy-name: payment-enquiry
+      x-group-name: Payment Initiation Message
+      x-proxy-name: Payment Enquiry
       summary: Payment Enquiry
       operationId: paymentEnquiry
       parameters:
         - $ref: '#/components/parameters/externalReqId'
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
         200:
           description: OK.
