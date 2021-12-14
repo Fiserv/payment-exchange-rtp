@@ -523,7 +523,7 @@ components:
     externalReqId:
       name: externalReqId
       in: path
-      description: ExternalRequestId
+      description: External Request Id
       required: true
       schema:
         type: integer
@@ -531,7 +531,7 @@ components:
     msgSeqId:
       name: msgSeqId
       in: path
-      description: MessageSeqId
+      description: Message Sequence Id
       required: true
       schema:
         type: integer
@@ -627,7 +627,7 @@ components:
     accNum:
       name: accNum
       in: query
-      description: accNum
+      description: Account Number
       required: false
       schema:
         type: string
@@ -637,7 +637,7 @@ components:
     instrId:
       name: instrId
       in: query
-      description: instrId
+      description: Instr Id
       required: false
       schema:
         type: string
@@ -647,7 +647,7 @@ components:
     msgName:
       name: msgName
       in: query
-      description: msgName
+      description: Message Name
       required: false
       schema:
         type: string
@@ -657,7 +657,7 @@ components:
     direction:
       name: direction
       in: query
-      description: direction
+      description: Direction
       required: false
       schema:
         type: string
@@ -667,7 +667,7 @@ components:
     amount:
       name: amount
       in: query
-      description: amount
+      description: Amount
       required: false
       schema:
         type: number
