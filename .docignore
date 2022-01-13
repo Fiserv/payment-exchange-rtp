@@ -7,4 +7,4 @@ migration/
 versioning/**
 
 # Declaring one particular markdown file to ignore
-migration.md
+# migration.md
