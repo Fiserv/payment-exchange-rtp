@@ -38,287 +38,2693 @@ info:
 servers:
   - url: https://tenants.fiserv.com/
 paths:
-  /v2/products:
+  /admin-message/messages-search-details:
     get:
       tags:
-        - Tenant
-      x-group-name: Tenant
-      x-proxy-name: products
-      summary: Returns tenant provider API.
-      operationId: TenantProviderID
+        -  AdminMessage
+      x-group-name: Admin
+      x-proxy-name: Search
+      summary: Search Admin Message details
+      operationId: searchAdminMessageDetails
+      parameters:
+      - $ref: '#/components/parameters/messageStatus'
+      - $ref: '#/components/parameters/messageName'
+      - $ref: '#/components/parameters/messageDirection'
+      - $ref: '#/components/parameters/eventCode'
+      - $ref: '#/components/parameters/fromDate'
+      - $ref: '#/components/parameters/toDate'
+      - $ref: '#/components/parameters/pageIndex'
+      - $ref: '#/components/parameters/pageSize'
+      - $ref: '#/components/parameters/orderBy'
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/AuthorizationHeader'
+        
       responses:
         200:
-          description: Tenant provider response. <a href="https://fiserv.com" rel="noopener noreferrer" target="_blank">external link</a> <a href="../docs?path=docs/getting-started/setup-tenant/setup-tenant.md">Setup Tenant</a>
+          description: Search Admin Message Details
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/AdminMessageSearchDetails'}
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/AdminMessageSearchDetailResponse'}
+ 
+ 
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body
+  /business-message/message-with-details:
+    get:
+      tags:
+      -  BusinessMessage 
+      x-group-name: Business
+      x-proxy-name: Search
+      summary: Search Business Message With Details 
+      operationId: searchBusinessMessageWithDetails
+      parameters:
+        - $ref: '#/components/parameters/accNum'
+        - $ref: '#/components/parameters/instrId'
+        - $ref: '#/components/parameters/msgName'
+        - $ref: '#/components/parameters/direction'
+        - $ref: '#/components/parameters/amount'
+        - $ref: '#/components/parameters/fromDate'
+        - $ref: '#/components/parameters/toDate'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/order'
+        - $ref: '#/components/parameters/AuthorizationHeader'
+      responses:
+        200:
+          description: Search Business Message With Details
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/BusinessMessageSearchWithDetailsResult'}
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/BusinessMessageWithDetailsResponse'}              
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+  /participant-status:
+    get:
+      tags:
+      - Participant Status
+      x-group-name: Participant Status
+      x-proxy-name: Get Status
+      summary: SignIn/SignOut Statuses for the signedIn Tenant
+      operationId: getParticipantStatus
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
+      responses:
+        200:
+          description: Participant Status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-            text/yaml:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/TenantProviderResponse'
-  /v2/apis:
-    post:
-      tags:
-        - Specs
-      x-group-name: Specs
-      x-proxy-name: apis
-      summary: Returns OpenAPI Spec.
-      operationId: APISpecProviderId
-      requestBody:
-        description: Filter Request
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SpecsFilterRequest'
-        required: false
-      responses:
-        200:
-          description: ""
+                $ref: '#/components/schemas/ParticipantStatusResult'
+        500:
+          description: Internal Server error on xroads
           content: {}
-      x-codegen-request-body-name: Body
-  /v2/docs:
-    get:
+      x-codegen-request-body-name: body
+
+    put:
       tags:
-        - Documents
-      x-group-name: Documents
-      x-proxy-name: docs
-      summary: Returns Docs in markdown format.
-      operationId: DocsAPIId
+      - Participant Status
+      x-group-name: Participant Status
+      x-proxy-name: Save Status
+      summary: Put Request in RTB HUB Service
+      operationId: updateParticipantStatus
       parameters:
         - in: query
-          name: path
-          schema:
-            type: string
+          name: signedIn
           required: true
-          description: Markdown document path
+          schema:
+            type: boolean
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
-        200:
-          description: ""
+        204:
+          description: Request placed in queue
+        500:
+          description: Internal Server error on xroads
           content: {}
-      x-codegen-request-body-name: Body
-  /v2/layouts:
+      x-codegen-request-body-name: body
+  /participant-status/system-status:
     get:
       tags:
-        - Layout
-      x-group-name: Layout
-      x-proxy-name: layouts
-      summary: Returns the product page layout.
-      operationId: LayoutAPIId
+      - System Status
+      summary: Home screen system status
+      x-group-name: System Status
+      x-proxy-name: Status
+      operationId: getSystemStatus
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
       responses:
         200:
-          description: This text will appear as description of your response body.
+          description: System Status
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-            text/yaml:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
-            text/plain:
-              schema:
-                $ref: '#/components/schemas/PageLayoutResponse'
+                $ref: '#/components/schemas/SystemStatusResult'
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body
+  /payment-initiation-message/create-payment:
+    post:
+      tags:
+      - Create Payment
+      x-group-name: Payment Initiation Message
+      x-proxy-name: Create Payment
+      summary: Create Payment 
+      operationId: createPayment
+      parameters:
+        - $ref: '#/components/parameters/AuthorizationHeader'
+      requestBody:
+        description: Create Payment Request
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/PaymentRequests'}
+            examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/CreatePaymentRequest'}
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ExtlReqId'}
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/CreatePaymentResponse'}
+          
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
+  /payment-initiation-message/payment-enquiry/{externalReqId}:
+    get:
+      tags:
+      - Payment Enquiry
+      x-group-name: Payment Initiation Message
+      x-proxy-name: Payment Enquiry
+      summary: Payment Enquiry
+      operationId: paymentEnquiry
+      parameters:
+        - $ref: '#/components/parameters/externalReqId'
+        - $ref: '#/components/parameters/AuthorizationHeader'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/PaymentEnquiryDto'}
+              examples:
+                Capture: {summary: CaptureResponse, $ref: '#/components/examples/PaymentEnquiryResponse'}  
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body 
+security:
+  - bearerAuth: []
 components:
   schemas:
-    PageLayoutResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          hero:
-            type: array
-            items:
-              type: object
-              properties:
-                descrption:
-                  type: string
-                  description: Descrption
-                image:
-                  type: string
-                  description: Image
-            description: Hero
-          journey Cards:
-            type: array
-            items:
-              type: object
-              properties:
-                journeyCard:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      contextualNavigationCards:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            contextualNavigationCard:
-                              type: array
-                              items:
-                                type: object
-                                properties:
-                                  description:
-                                    type: string
-                                    description: Description
-                                  link:
-                                    type: array
-                                    items:
-                                      type: object
-                                      properties:
-                                        type:
-                                          type: string
-                                          description: Type
-                                        uri:
-                                          type: string
-                                          description: URI
-                                    description: Link
-                                  title:
-                                    type: string
-                                    description: Title
-                              description: ContextualNavigationCard
-                        description: ContextualNavigationCards
-                      description:
-                        type: string
-                        description: Description
-                      link:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            type:
-                              type: string
-                              description: Type
-                            uri:
-                              type: string
-                              description: URI
-                        description: Link
-                      title:
-                        type: string
-                        description: Title
-                  description: JourneyCard
-            description: JourneyCards
-    SpecsFilterRequest:
+    ExtlReqId:
+      type: integer
+      format: int64
+    PaymentRequests:
       type: object
       properties:
-        categories:
+        PaymentRequest:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name
-              subcategories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Name
-                description: Subcategories
-          description: Categories
-    TenantProviderResponse:
+            $ref: '#/components/schemas/PaymentRequest'
+      title: PaymentRequests
+    PaymentRequest:
+      type: object
+      required:
+       - ccsIdentifier
+       - paymentDate
+       - transactionAmount
+       - transactionID
+       - paymentMethod
+       - paymentType
+       - originatorName
+       - debitAccountNumber
+       - endToEndID
+       - beneficiaryBankABANumber
+       - beneficiaryBankName
+       - beneficiaryName
+       - instructionType
+      properties:
+        ccsIdentifier:
+          type: integer
+          format: int64
+          maxLength: 35
+        paymentDate:
+          type: string
+          format: date 
+        transactionAmount:
+          type: integer
+          format: int64
+          maxLength: 18
+        transactionID:
+          type: integer
+          format: int64
+          maxLength: 35
+        paymentMethod:
+          type: string
+          maxLength: 3
+        paymentType:
+          type: string
+          maxLength: 4
+        originatorName:
+          type: string
+          maxLength: 70
+        originatorAddressblock:
+          type: string
+        debitAccountNumber:
+          type: integer
+          format: int64
+          maxLength: 35
+        endToEndID:
+          type: integer
+          format: int64
+          maxLength: 35
+        beneficiaryBankABANumber:
+          type: integer
+          format: int64
+        beneficiaryBankName:
+          type: string
+          maxLength: 70
+        beneficiaryName:
+          type: string
+          maxLength: 70
+        beneficiaryAddressblock:
+          type: string
+          maxLength: 70
+        additionalInformationforBeneficiary:
+          type: integer
+          format: int64
+        instructionType:
+          type: integer
+          format: int64  
+    PaymentEnquiryDto:
       type: object
       properties:
-        brand:
-          type: string
-          description: Brand
-        brandDescription:
-          type: string
-          description: BrandDescription
-        brandLogoURL:
-          type: string
-          description: BrandLogoURL
-        categories:
+        extlReqId:
+          type: integer
+          format: int64
+          title: id
+        ExtlReqDtlDto:  
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Name
-              subcategories:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Name
-                    value:
-                      type: string
-                      description: Value
-                description: Subcategories
-              value:
-                type: string
-                description: Value
-          description: Categories
-        name:
+           $ref: '#/components/schemas/ExtlReqDtlDto'
+      title: PaymentEnquiryDto
+    ExtlReqDtlDto:  
+      type: object
+      properties:
+        status:
           type: string
-          description: Name
-        product:
-          type: object
-          properties:
-            apiSpecification:
-              type: string
-              description: APISpecification 
-            description:
-              type: string
-              description: Description
-            documentation:
-              type: string
-              description: Documentation
-            featured:
-              type: boolean
-              description: Featured
-            layout:
-              type: string
-              description: Layout
-            logoURL:
-              type: string
-              description: LogoURL
-          description: Product
-        solution:
+        extlReqDtlId:  
+          type: integer
+          format: int64      
+      title: ExternalRequestDtlDto
+    ParticipantStatusResult: 
+      type: object
+      properties:  
+        signedOff:
+          type: boolean
+        signonoffRequestStatus:
           type: string
-          description: Solution
-        title:
+        signOnOffButtonEnabled:
+          type: boolean
+    SystemStatusResult: 
+      type: object
+      properties:  
+        currentStatus:
           type: string
-          description: Title
-  responses:
-    apiSpecResponseWrapper:
-      description: OpenAPI Spec for the APIs. 
-      content: {}
-    docsResponseWrapper:
-      description: Markdown files.
-      content: {}
-    productPage:
-      description: This text will appear as description of your response body. 
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/PageLayoutResponse'
-    tenant:
-      description: This text will appear as description of your response body. 
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-        text/yaml:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
-        text/plain:
-          schema:
-            $ref: '#/components/schemas/TenantProviderResponse'
+        suspended:
+          type: boolean       
+    AdminMessageConfig:
+      type: object
+      properties:
+        i18n:
+          $ref: '#/components/schemas/I18n'
+        labelValueBean:
+          $ref: '#/components/schemas/LabelValueBean'
+    SearchAdminMessageResult: 
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+        adminMessageResponse:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageResponse'
+      title: SearchAdminMessageResult 
+    AdminMessageSearchDetails:
+      type: object
+      properties:
+        AdminMessageSearchDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageSearchDetail'
+      title: AdminMessageSearchDetails 
+    AdminMessageSearchDetail:
+      type: object
+      properties:
+        adminMessageResponse:
+          $ref: '#/components/schemas/AdminMessageResponse'
+        adminMessageDetails:
+          $ref: '#/components/schemas/AdminMessageDetails'   
+      title: AdminMessageSearchDetail 
+    AdminMessageResponse:
+      type: object
+      properties:
+        msgSeqId:
+          type: integer
+          format: int64
+        msgId:
+          type: string
+        msgType:
+          type: string
+        direction:
+          type: string
+        status:
+          type: string
+        sendRecvDate:
+          type: string
+        eventCode:
+          type: string
+       
+      title: AdminMessageRequest
+    AdminMessageDetails:
+      type: object
+      properties:
+        msgSeqId:
+          type: integer
+          format: int64
+        msgType:
+          type: string
+        msgXml:
+          type: string
+      title: AdminMessageDetails
+    AdminMessageDetailsResult:
+      type: object
+      properties:
+        AdminMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageDetails'
+    I18n:
+      type: object
+      additionalProperties:
+        type: string
+    LabelValueBean:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          $ref: '#/components/schemas/LabelValue'
+    LabelValue:
+      type: object
+      properties:
+        text:
+          type: string
+        value:
+          type: string
+      title: LabelValue
+    Pager:
+      type: object
+      properties:
+        pageIndex:
+          type: integer 
+        pageSize:
+          type: integer  
+        orderBy:
+          type: string
+        order:
+          enum:
+            - asc
+            - desc    
+    BusinessMessageSearchWithDetailsResult: 
+      type: object
+      properties:
+        businessMessageWithDetails:
+          $ref: '#/components/schemas/BusinessMessageWithDetails'
+      title: BusinessMessageSearchWithDetailsResult
+    BusinessMessageWithDetails:
+      type: object
+      properties:
+        businessMessageWithDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessMessageWithDetail'
+      title: BusinessMessageWithDetails  
+    BusinessMessageWithDetail:
+      type: object
+      properties:
+        businessMessageSearch:
+          $ref: '#/components/schemas/BusinessMessageSearch'
+        businessMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessMessageDetails'
+      title: BusinessMessageWithDetail
+    BusinessMessageSearch:
+      type: object
+      properties:
+        paymentSeqId:
+          type: integer
+          format: int64
+        msgSeqId:
+          type: integer
+          format: int64
+        cdtrAcctOthrId:
+          type: string
+        instrId:
+          type: string
+        msgType:
+          type: string
+        msgTypeValue:
+          type: string          
+        direction:
+          type: string
+          minLength: 1
+          maxLength: 1
+        status:
+          type: string
+        statusDesc:
+          type: string
+        sendRecvDate:
+          type: string
+        intrBkSttlmAmt:
+          type: number
+      title: BusinessMessageSearch
+    BusinessMessageDetails:
+      type: object
+      properties:
+        msgXml:
+          type: string
+        msgType:
+          type: string
+      title: BusinessMessageDetails
+
+            
   securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
     basic:
       type: http
       scheme: basic
+  parameters:
+    externalReqId:
+      name: externalReqId
+      in: path
+      description: External Request Id
+      required: true
+      schema:
+        type: integer
+        format: int64 
+    msgSeqId:
+      name: msgSeqId
+      in: path
+      description: Message Sequence Id
+      required: true
+      schema:
+        type: integer
+        format: int64  
+    msgType:
+      name: msgType
+      in: query
+      description: Search by Message Type
+      schema:
+        type: string
+    messageStatus:
+      name: messageStatus
+      in: query
+      description: Search by Message Status
+      required: false
+      schema:
+        type: string
+        enum: [ACTC, RCVD, RJCT, SENT]
+    messageName:
+      name: messageName
+      in: query
+      description: Search by Message Name
+      required: false
+      schema:
+        type: string
+        enum: [ADMI.002, ADMI.004, ADMN.001, ADMN.002, ADMN.003, ADMN.004, ADMN.005, ADMN.006]
+    messageDirection:
+      name: messageDirection
+      in: query
+      description: Search by Message Direction
+      required: false
+      schema:
+        type: string
+        enum: [I, O]
+    eventCode:
+      name: eventCode
+      in: query
+      description: Search by Message Event Code
+      schema:
+        type: string
+        enum: ["960", "961", "971", "972", "975", "976", "981", "982", "993", "994", "996", "998", "999"]
+    fromDate:
+      name: fromDate
+      in: query
+      description: Search by Date
+      required: false
+      schema:
+        type: string
+        format: date
+        default: 01/01/2021
+    toDate:
+      name: toDate
+      in: query
+      description: Search by Date
+      required: false
+      schema:
+        type: string
+        format: date
+        default: 01/01/2021
+    pageIndex:
+      name: pageIndex
+      in: query
+      description: Page Index
+      required: false
+      schema:
+        type: integer
+        default: 01
+    pageSize:
+      name: pageSize
+      in: query
+      description: Page Size
+      required: false
+      schema:
+        type: integer
+        default: 100
+    orderBy:
+      name: orderBy
+      in: query
+      description: Order By
+      required: false
+      schema:
+        type: string
+        default: AccountNumber
+    order:
+      name: order
+      in: query
+      description: Page Size
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc] 
+        default: asc
+    accNum:
+      name: accNum
+      in: query
+      description: Account Number
+      required: false
+      schema:
+        type: string
+        pattern:  '^[a-zA-Z0-9-,.]*$'
+        maxLength: 34
+        default: 1234
+    instrId:
+      name: instrId
+      in: query
+      description: Instr Id
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9]*$'
+        maxLength: 35
+        default: abn123
+    msgName:
+      name: msgName
+      in: query
+      description: Message Name
+      required: false
+      schema:
+        type: string
+        maxLength: 40
+        enum: [CAMT.029, CAMT.035, CAMT.056, PACS.002, PACS.008]
+        default: CAMT.029
+    direction:
+      name: direction
+      in: query
+      description: Direction
+      required: false
+      schema:
+        type: string
+        maxLength: 1
+        enum: [I, O]
+        default: I
+    amount:
+      name: amount
+      in: query
+      description: Amount
+      required: false
+      schema:
+        type: number
+        default: 6652
+    AuthorizationHeader:
+      x-model-version: 1.0
+      name: Authorization
+      schema: {type: string}
+      in: header
+      required: true
+      description: Authorization header used to ensure the request has not been tampered
+        with during transmission. Valid encryption; HMAC, JWT, or AccessToken. For
+        more information, refer to the supporting documentation on the Developer Portal.
+
+  examples:
+    CreatePaymentRequest:
+      value:
+        "PaymentRequest": [
+        {
+          "ccsIdentifier": "1",
+          "paymentDate": "2021-02-15",
+          "transactionAmount": "1000",
+          "transactionID": "123",
+          "paymentMethod": "Cdt",
+          "paymentType": "Onl",
+          "originatorName": "Test",
+          "originatorAddressblock": "",
+          "debitAccountNumber": "3452",
+          "endToEndID": "234",
+          "beneficiaryBankABANumber": "456",
+          "beneficiaryBankName": "BOFA",
+          "beneficiaryName": "ABC",
+          "beneficiaryAddressblock": "",
+          "additionalInformationforBeneficiary": "",
+          "instructionType":"1"
+        },
+        {
+          "ccsIdentifier": "2",
+          "paymentDate": "2021-11-29",
+          "transactionAmount": "1000",
+          "transactionID": "1234",
+          "paymentMethod": "Cdt",
+          "paymentType": "Onl",
+          "originatorName": "Test",
+          "originatorAddressblock": "",
+          "debitAccountNumber": "3452",
+          "endToEndID": "234",
+          "beneficiaryBankABANumber": "456",
+          "beneficiaryBankName": "BOFA",
+          "beneficiaryName": "ABC",
+          "beneficiaryAddressblock": "",
+          "additionalInformationforBeneficiary": "",
+          "instructionType":"1"
+        }
+    ]
+    CreatePaymentResponse:
+      value:
+        1
+    PaymentEnquiryResponse:
+      value:
+        "PaymentEnquiryDto": {
+          "extlReqId": "1",
+          "extlReqDtlDto": [
+            {
+            "status": "RCVD",
+            "extlReqDtlId": "1"
+            },
+            {
+            "status": "QUEUED",
+            "extlReqDtlId": "2"
+            }
+        ]
+        }
+    BusinessMessageWithDetailsResponse:
+      value:
+        {
+	"businessMessageWithDetails": {
+		"businessMessageWithDetail": [
+			{
+				"businessMessageSearch": {
+					"sendRecvDate": "in dolor consequat",
+					"msgTypeValue": "id sit Duis dolore",
+					"intrBkSttlmAmt": 41506295.76141906,
+					"statusDesc": "in in culpa",
+					"direction": "a",
+					"paymentSeqId": 6616633764109308000,
+					"status": "labore dolor est",
+					"cdtrAcctOthrId": "tempor pariatur",
+					"msgSeqId": 1677678246204620800,
+					"msgType": "magna sunt eu labore",
+					"instrId": "quis Lorem "
+				},
+				"businessMessageDetails": [
+					{
+						"msgType": "dolor",
+						"msgXml": "fugiat cillum"
+					},
+					{
+						"msgXml": "in laborum voluptate",
+						"msgType": "dolore in ex"
+					},
+					{
+						"msgType": "dolor",
+						"msgXml": "ea"
+					},
+					{
+						"msgXml": "dolor ut ullamco eu sunt",
+						"msgType": "est sed anim eu culpa"
+					},
+					{
+						"msgXml": "exercitation sit nisi Excepteur ad",
+						"msgType": "amet anim velit incididunt"
+					},
+					{
+						"msgType": "eiusmod enim es",
+						"msgXml": "non fugiat al"
+					},
+					{
+						"msgXml": "dolore id nostrud aliqua ut",
+						"msgType": "tempor Lorem in esse"
+					},
+					{
+						"msgXml": "dolore aute velit in",
+						"msgType": "veniam cillum aliqua"
+					},
+					{
+						"msgXml": "commodo aute deserunt",
+						"msgType": "adipisicing Duis voluptate"
+					},
+					{
+						"msgType": "elit aliqua Excepteur et",
+						"msgXml": "cillum"
+					},
+					{
+						"msgType": "sint esse labore Excepteur eiusmod",
+						"msgXml": "aliq"
+					},
+					{
+						"msgXml": "consectetur in tempor aute",
+						"msgType": "sed cupidatat"
+					},
+					{
+						"msgXml": "magna adipisicing id eiu",
+						"msgType": "consectetur eu commodo"
+					},
+					{
+						"msgType": "ea a",
+						"msgXml": "qui nulla quis veniam"
+					},
+					{
+						"msgXml": "ipsum cupidatat est esse nisi",
+						"msgType": "in Excepteur su"
+					},
+					{
+						"msgType": "elit voluptate minim incididunt ex",
+						"msgXml": "esse"
+					},
+					{
+						"msgXml": "incididunt dolore",
+						"msgType": "Ut ipsum consectetur ullamco ut"
+					},
+					{
+						"msgXml": "in Duis culpa",
+						"msgType": "ut"
+					},
+					{
+						"msgXml": "consectetur voluptate",
+						"msgType": "in eu cupidatat aliqua"
+					},
+					{
+						"msgXml": "cupidatat Lorem elit magna",
+						"msgType": "proident ad"
+					}
+				]
+			},
+			{
+				"businessMessageSearch": {
+					"instrId": "pariatur a",
+					"msgSeqId": -3355358734018187300,
+					"paymentSeqId": -5793715195377537000,
+					"direction": "e",
+					"cdtrAcctOthrId": "quis eu ea Duis in",
+					"msgTypeValue": "nulla ea Excepteur mollit adipisicing",
+					"statusDesc": "pariatur",
+					"intrBkSttlmAmt": 1055326.1120894105,
+					"sendRecvDate": "in incididunt",
+					"msgType": "voluptate",
+					"status": "dolore sit magna labore"
+				},
+				"businessMessageDetails": [
+					{
+						"msgXml": "irure",
+						"msgType": "voluptate enim id ea"
+					},
+					{
+						"msgType": "velit",
+						"msgXml": "ut Ut nulla eu"
+					},
+					{
+						"msgType": "et elit anim",
+						"msgXml": "et occaecat quis"
+					},
+					{
+						"msgXml": "sed dolor eu",
+						"msgType": "irure minim Lorem fugiat adipisicing"
+					},
+					{
+						"msgType": "magna nulla enim mollit nostrud",
+						"msgXml": "dol"
+					},
+					{
+						"msgXml": "",
+						"msgType": "eu ullamc"
+					},
+					{
+						"msgType": "laborum anim ipsum enim",
+						"msgXml": "consequat nulla"
+					},
+					{
+						"msgType": "nostrud eu exercitation",
+						"msgXml": "non velit amet"
+					},
+					{
+						"msgXml": "exercitation ad mollit sint in",
+						"msgType": "est qu"
+					},
+					{
+						"msgType": "ex ipsum",
+						"msgXml": "Excepteur dolor "
+					},
+					{
+						"msgXml": "",
+						"msgType": "mollit nulla"
+					},
+					{
+						"msgType": "nisi",
+						"msgXml": "deserunt commodo a"
+					},
+					{
+						"msgXml": "fugiat sint qui in Ut",
+						"msgType": "Lorem Ut commodo"
+					},
+					{
+						"msgXml": "non sed Lorem",
+						"msgType": "do nulla nisi commodo"
+					},
+					{
+						"msgType": "sunt",
+						"msgXml": "laborum eu quis occaecat"
+					},
+					{
+						"msgXml": "ut ex esse ad",
+						"msgType": "consequat velit"
+					},
+					{
+						"msgType": "amet",
+						"msgXml": "eu occ"
+					},
+					{
+						"msgXml": "Lorem Ut ut enim",
+						"msgType": "elit nulla consectetur irure"
+					},
+					{
+						"msgType": "non",
+						"msgXml": "sunt"
+					},
+					{
+						"msgType": "est officia eiusmod ut adipisicing",
+						"msgXml": "amet"
+					}
+				]
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgXml": "",
+						"msgType": "esse non"
+					},
+					{
+						"msgXml": "Duis nisi",
+						"msgType": "nulla"
+					},
+					{
+						"msgXml": "exercitation sunt deserunt est Lorem",
+						"msgType": ""
+					},
+					{
+						"msgXml": "eiusmod adipisicing occ",
+						"msgType": "officia id dolore"
+					},
+					{
+						"msgXml": "deserunt",
+						"msgType": "esse sit commodo"
+					},
+					{
+						"msgXml": "adipisicing amet ullamco ea exercitation",
+						"msgType": "dolore "
+					},
+					{
+						"msgXml": "Excepteu",
+						"msgType": "ut volu"
+					},
+					{
+						"msgType": "in tempor nulla",
+						"msgXml": "incididunt adipisicing"
+					},
+					{
+						"msgXml": "commodo ut voluptate dolor",
+						"msgType": "ullamco"
+					},
+					{
+						"msgType": "irure",
+						"msgXml": "ullamco laborum magna consequat"
+					},
+					{
+						"msgType": "eu non",
+						"msgXml": "in"
+					},
+					{
+						"msgType": "deserunt consequat",
+						"msgXml": "sint ipsum dolore"
+					},
+					{
+						"msgType": "in laborum sit tempor aliqua",
+						"msgXml": "Lorem tempor et ullamco quis"
+					},
+					{
+						"msgType": "adipisicing elit aliquip",
+						"msgXml": "esse non cillum consectetur"
+					},
+					{
+						"msgType": "ex aliquip",
+						"msgXml": "consequat sunt magna proident in"
+					},
+					{
+						"msgType": "nulla",
+						"msgXml": "quis"
+					},
+					{
+						"msgXml": "officia nostrud fugiat",
+						"msgType": "ut cillum aute Ut"
+					},
+					{
+						"msgType": "velit in",
+						"msgXml": "sed"
+					},
+					{
+						"msgType": "exercitation Lorem dolore",
+						"msgXml": "Duis dolore"
+					},
+					{
+						"msgXml": "ea velit",
+						"msgType": "dolore ut officia ut"
+					}
+				],
+				"businessMessageSearch": {
+					"status": "minim id do",
+					"statusDesc": "E",
+					"cdtrAcctOthrId": "laboris magna",
+					"direction": "m",
+					"msgSeqId": -6965574375444025000,
+					"sendRecvDate": "irure ea Lorem esse dolor",
+					"msgType": "ipsum Excep",
+					"paymentSeqId": -4617844489841918000,
+					"instrId": "nisi do",
+					"intrBkSttlmAmt": 14411182.219054193,
+					"msgTypeValue": "do qui labore ea dolore"
+				}
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgXml": "ullamco commodo do in",
+						"msgType": "ut occaecat et"
+					},
+					{
+						"msgXml": "irure",
+						"msgType": "dolore non"
+					},
+					{
+						"msgXml": "ex aliqua Excepteur",
+						"msgType": "qui enim dolore dolor"
+					},
+					{
+						"msgXml": "ut",
+						"msgType": "Excepteur"
+					},
+					{
+						"msgType": "nostrud labore velit cupidatat",
+						"msgXml": "sunt sint ad"
+					},
+					{
+						"msgXml": "laborum ad",
+						"msgType": "Duis consequat ad"
+					},
+					{
+						"msgType": "exercitation sunt ex",
+						"msgXml": "ad id Duis mollit magna"
+					},
+					{
+						"msgXml": "eu sunt",
+						"msgType": "nostrud voluptate tempor"
+					},
+					{
+						"msgType": "reprehenderit",
+						"msgXml": "do irure reprehenderit"
+					},
+					{
+						"msgType": "Excepteur",
+						"msgXml": "id consectetur et"
+					},
+					{
+						"msgType": "adipisicing",
+						"msgXml": "amet anim ut"
+					},
+					{
+						"msgType": "labore commodo laborum",
+						"msgXml": "fugiat in irure commodo"
+					},
+					{
+						"msgType": "Ut aute dolor",
+						"msgXml": "Excepteur cillum magna Lorem exercitation"
+					},
+					{
+						"msgType": "culpa ipsum magna",
+						"msgXml": "aliqua ad"
+					},
+					{
+						"msgXml": "incididunt magna in elit esse",
+						"msgType": "irur"
+					},
+					{
+						"msgType": "laboris",
+						"msgXml": "ut et"
+					},
+					{
+						"msgXml": "ullamco",
+						"msgType": "sunt aute"
+					},
+					{
+						"msgXml": "irure magna ",
+						"msgType": "in dolor"
+					},
+					{
+						"msgXml": "ut",
+						"msgType": "dolor laboris c"
+					},
+					{
+						"msgXml": "aliquip reprehenderit",
+						"msgType": "dolore culpa"
+					}
+				],
+				"businessMessageSearch": {
+					"sendRecvDate": "quis ad officia non deserunt",
+					"status": "amet",
+					"instrId": "et aliqua Duis",
+					"msgType": "pariatur anim cillum in enim",
+					"intrBkSttlmAmt": -50298607.02373687,
+					"cdtrAcctOthrId": "dolor qui",
+					"statusDesc": "esse sint laborum cupidatat",
+					"direction": "c",
+					"msgSeqId": 6673178417704616000,
+					"msgTypeValue": "elit aute ex culpa ",
+					"paymentSeqId": 8251722750526497000
+				}
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgXml": "dolore et voluptate eiusmod",
+						"msgType": "ipsum proident ad velit"
+					},
+					{
+						"msgXml": "sed ex cillum dolor",
+						"msgType": "laborum in labore proident"
+					},
+					{
+						"msgXml": "cillum id magna irure",
+						"msgType": "proident consequat"
+					},
+					{
+						"msgType": "sed consequat",
+						"msgXml": "nostrud"
+					},
+					{
+						"msgXml": "velit dolore elit",
+						"msgType": "Lorem consequat elit Excepteur tempor"
+					},
+					{
+						"msgType": "aute nisi minim sed",
+						"msgXml": "amet exercitation tempor"
+					},
+					{
+						"msgType": "nisi",
+						"msgXml": "enim"
+					},
+					{
+						"msgType": "minim eiusmod cillum adipisicing",
+						"msgXml": ""
+					},
+					{
+						"msgType": "sit enim",
+						"msgXml": "veniam sed irure velit Ut"
+					},
+					{
+						"msgType": "sunt aliquip",
+						"msgXml": "laboris dolor adipisicing in minim"
+					},
+					{
+						"msgXml": "dolore voluptate dolor dolor",
+						"msgType": "culpa qui"
+					},
+					{
+						"msgXml": "proident Excepteur",
+						"msgType": "aliquip ea dolore ex proident"
+					},
+					{
+						"msgType": "deserunt in quis consectetur",
+						"msgXml": "nisi eiusmod occaecat"
+					},
+					{
+						"msgXml": "dolor aliquip velit in",
+						"msgType": "magna mollit dese"
+					},
+					{
+						"msgType": "officia nulla velit",
+						"msgXml": "magna"
+					},
+					{
+						"msgXml": "consequat cillum Ut fugiat incididunt",
+						"msgType": "lab"
+					},
+					{
+						"msgXml": "eiusmod",
+						"msgType": "in anim est irure ullamco"
+					},
+					{
+						"msgType": "aliqua dolore ullamco ea",
+						"msgXml": "labore qui"
+					},
+					{
+						"msgType": "consequat occaecat commodo veniam",
+						"msgXml": "eiusmod anim"
+					},
+					{
+						"msgType": "ipsum",
+						"msgXml": "nisi sunt"
+					}
+				],
+				"businessMessageSearch": {
+					"status": "do consectetur",
+					"msgSeqId": 6062457528540250000,
+					"instrId": "non proident Ut",
+					"paymentSeqId": 5299551829598183000,
+					"sendRecvDate": "labore irure",
+					"cdtrAcctOthrId": "occaecat",
+					"direction": "a",
+					"msgType": "quis",
+					"intrBkSttlmAmt": -84993190.16386609,
+					"msgTypeValue": "in ea minim ipsum id",
+					"statusDesc": "exercitation dolor"
+				}
+			},
+			{
+				"businessMessageSearch": {
+					"paymentSeqId": 3426866762690887700,
+					"msgSeqId": 5539407706393952000,
+					"instrId": "nisi",
+					"sendRecvDate": "d",
+					"msgType": "irure consequat velit cupidatat",
+					"status": "Duis",
+					"direction": "c",
+					"statusDesc": "elit commodo Duis",
+					"intrBkSttlmAmt": 48042154.78355998,
+					"msgTypeValue": "pariatur et in",
+					"cdtrAcctOthrId": "anim non est ut ex"
+				},
+				"businessMessageDetails": [
+					{
+						"msgType": "minim est consequat",
+						"msgXml": "Lorem anim deserunt"
+					},
+					{
+						"msgXml": "tempor labore",
+						"msgType": "culpa eu in sit velit"
+					},
+					{
+						"msgType": "elit voluptate sunt qui sed",
+						"msgXml": "ea sed consectetur esse tempor"
+					},
+					{
+						"msgType": "occaecat",
+						"msgXml": "commodo mollit veniam ad laboris"
+					},
+					{
+						"msgXml": "non nulla",
+						"msgType": "sunt ut pariatur minim Excepteur"
+					},
+					{
+						"msgXml": "commodo ex officia",
+						"msgType": "eu cupidatat occaecat"
+					},
+					{
+						"msgXml": "irure amet elit dolor",
+						"msgType": "Lorem laborum amet dolore laboris"
+					},
+					{
+						"msgXml": "voluptate tempor eu",
+						"msgType": "occaecat ex sint mollit"
+					},
+					{
+						"msgType": "sit ipsum officia ullamco ut",
+						"msgXml": "cupidatat aliqua nisi sunt nulla"
+					},
+					{
+						"msgType": "ut proident do",
+						"msgXml": "nostrud dolore ullamco"
+					},
+					{
+						"msgType": "nisi",
+						"msgXml": "sint"
+					},
+					{
+						"msgXml": "veniam consectetur",
+						"msgType": "veniam consequat"
+					},
+					{
+						"msgXml": "sint",
+						"msgType": "sint ullamco sunt ex"
+					},
+					{
+						"msgType": "ad",
+						"msgXml": "laboris mollit ut ipsum"
+					},
+					{
+						"msgXml": "labore commodo voluptate eius",
+						"msgType": "nostrud occaecat in ut"
+					},
+					{
+						"msgXml": "sit enim dolore",
+						"msgType": "aliquip dolor adipisicing"
+					},
+					{
+						"msgXml": "non laboris fugiat",
+						"msgType": "consequat sunt labore ex culpa"
+					},
+					{
+						"msgType": "do anim occaecat",
+						"msgXml": "labore dolore"
+					},
+					{
+						"msgXml": "ullamco",
+						"msgType": "proident offic"
+					},
+					{
+						"msgXml": "nostrud reprehenderit consequa",
+						"msgType": "incididunt esse elit quis"
+					}
+				]
+			},
+			{
+				"businessMessageSearch": {
+					"intrBkSttlmAmt": 74187377.13874269,
+					"cdtrAcctOthrId": "consectetur nisi Lorem",
+					"status": "pariatur sed ad",
+					"msgType": "enim culpa",
+					"direction": "u",
+					"statusDesc": "in nulla",
+					"sendRecvDate": "ullamco esse no",
+					"msgSeqId": 4281045000448602000,
+					"instrId": "Excepteur tempor est in Lor",
+					"msgTypeValue": "elit ",
+					"paymentSeqId": 5131564366857982000
+				},
+				"businessMessageDetails": [
+					{
+						"msgXml": "cillum fugiat minim in dolor",
+						"msgType": "mollit id occaecat nisi consequat"
+					},
+					{
+						"msgType": "aute pariatur quis",
+						"msgXml": "tempor in"
+					},
+					{
+						"msgXml": "veniam enim",
+						"msgType": "officia"
+					},
+					{
+						"msgType": "amet voluptate laborum proident",
+						"msgXml": "ea"
+					},
+					{
+						"msgXml": "ut",
+						"msgType": "occaecat pariatur amet"
+					},
+					{
+						"msgXml": "labore nulla magna Ut in",
+						"msgType": "id eu eiusmod"
+					},
+					{
+						"msgXml": "fugiat",
+						"msgType": "adipisicing commodo occaecat"
+					},
+					{
+						"msgType": "sit",
+						"msgXml": "non officia ut labor"
+					},
+					{
+						"msgType": "dolor velit",
+						"msgXml": "exercitation sunt amet dolore"
+					},
+					{
+						"msgType": "dolor ipsum adipisicing",
+						"msgXml": "laboris dolore ullamco sit"
+					},
+					{
+						"msgXml": "commodo reprehenderit in elit voluptate",
+						"msgType": "adipisicing minim ut"
+					},
+					{
+						"msgXml": "proident in non lab",
+						"msgType": "pariatur"
+					},
+					{
+						"msgXml": "d",
+						"msgType": "nulla"
+					},
+					{
+						"msgType": "enim esse qui labore aute",
+						"msgXml": "enim magna Ut dolore"
+					},
+					{
+						"msgType": "ut sunt quis",
+						"msgXml": "sed n"
+					},
+					{
+						"msgXml": "do ex enim",
+						"msgType": "cillum"
+					},
+					{
+						"msgXml": "magna",
+						"msgType": "Dui"
+					},
+					{
+						"msgXml": "ut",
+						"msgType": "nisi"
+					},
+					{
+						"msgType": "cillum",
+						"msgXml": "nostrud anim Duis cillum ea"
+					},
+					{
+						"msgType": "enim quis nostrud id",
+						"msgXml": "reprehenderit sunt nulla voluptate"
+					}
+				]
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgXml": "amet",
+						"msgType": "ea ipsum anim in minim"
+					},
+					{
+						"msgXml": "nostrud Ut do officia sunt",
+						"msgType": "eiusmod consequat occaecat Ut"
+					},
+					{
+						"msgType": "commodo",
+						"msgXml": "nostrud incididunt elit irure"
+					},
+					{
+						"msgType": "aliqua in exercitation dolore",
+						"msgXml": "voluptate sint"
+					},
+					{
+						"msgType": "Lorem culpa minim",
+						"msgXml": "elit"
+					},
+					{
+						"msgType": "aliqui",
+						"msgXml": "laborum sed consequat quis pariatur"
+					},
+					{
+						"msgXml": "occaecat sit Lorem",
+						"msgType": "Excepteur in ea id"
+					},
+					{
+						"msgXml": "commodo",
+						"msgType": "Excepteur ipsum"
+					},
+					{
+						"msgType": "amet non velit",
+						"msgXml": "exercitation"
+					},
+					{
+						"msgXml": "Ut fugiat amet magna voluptate",
+						"msgType": "consectetur"
+					},
+					{
+						"msgXml": "amet eu eiusmod incididunt officia",
+						"msgType": "quis"
+					},
+					{
+						"msgXml": "Duis in Ut adipisicing",
+						"msgType": "irure sit"
+					},
+					{
+						"msgType": "amet pariatur",
+						"msgXml": "ut do minim"
+					},
+					{
+						"msgType": "aliquip Lorem sit",
+						"msgXml": "nulla aliqua veniam"
+					},
+					{
+						"msgXml": "in ut irure ipsum",
+						"msgType": "proi"
+					},
+					{
+						"msgXml": "incididunt deserunt id dolore",
+						"msgType": "dolore proident sed"
+					},
+					{
+						"msgType": "id enim commodo",
+						"msgXml": "pariatur enim"
+					},
+					{
+						"msgType": "officia dolore Lorem cillum",
+						"msgXml": "sed"
+					},
+					{
+						"msgXml": "irure nulla tempor adipisicing enim",
+						"msgType": "dolor incididunt"
+					},
+					{
+						"msgType": "elit fugiat",
+						"msgXml": "conse"
+					}
+				],
+				"businessMessageSearch": {
+					"paymentSeqId": 1410936858341757000,
+					"instrId": "in",
+					"msgType": "minim dolor nulla irure consequat",
+					"sendRecvDate": "esse",
+					"cdtrAcctOthrId": "aute laborum officia sint enim",
+					"status": "et fugiat labor",
+					"direction": "e",
+					"statusDesc": "deserunt eu",
+					"msgTypeValue": "dolor elit tempor",
+					"intrBkSttlmAmt": -86970193.85665277,
+					"msgSeqId": -5185066819158917000
+				}
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgType": "nisi nulla pariatur",
+						"msgXml": "est"
+					},
+					{
+						"msgType": "amet et sed",
+						"msgXml": "quis non exercitation"
+					},
+					{
+						"msgType": "Excepteur i",
+						"msgXml": "ea culpa sunt"
+					},
+					{
+						"msgType": "quis adipisicing proident ipsum non",
+						"msgXml": "officia fugiat dolore"
+					},
+					{
+						"msgXml": "dolore",
+						"msgType": "magna culpa aliquip proident"
+					},
+					{
+						"msgXml": "sit veniam",
+						"msgType": "nulla laboris id laborum"
+					},
+					{
+						"msgType": "irure occaecat esse",
+						"msgXml": "veniam dolor in ut"
+					},
+					{
+						"msgXml": "et dolore dolor ut",
+						"msgType": "pariatur sunt id"
+					},
+					{
+						"msgType": "labore laboris",
+						"msgXml": "magna dolore"
+					},
+					{
+						"msgType": "tempor amet nulla",
+						"msgXml": "sed eu dolor"
+					},
+					{
+						"msgXml": "cillum",
+						"msgType": "esse dolor"
+					},
+					{
+						"msgXml": "aute laboris veniam",
+						"msgType": "elit nulla et"
+					},
+					{
+						"msgXml": "nostrud ut",
+						"msgType": "paria"
+					},
+					{
+						"msgType": "ut officia et",
+						"msgXml": "commodo aute adipisicing"
+					},
+					{
+						"msgXml": "mollit commodo",
+						"msgType": "sed qui quis ullamco"
+					},
+					{
+						"msgType": "ex",
+						"msgXml": "culpa eu cupidatat"
+					},
+					{
+						"msgType": "dolore aute",
+						"msgXml": "sed consequat anim mollit"
+					},
+					{
+						"msgXml": "dolor",
+						"msgType": "Lorem dolor irure temp"
+					},
+					{
+						"msgType": "velit dolor",
+						"msgXml": "dolor ut non voluptate"
+					},
+					{
+						"msgXml": "ut dolore",
+						"msgType": "sed tempor"
+					}
+				],
+				"businessMessageSearch": {
+					"msgSeqId": -2468652308552483000,
+					"intrBkSttlmAmt": 10228618.558058724,
+					"paymentSeqId": -2661566805889765400,
+					"sendRecvDate": "anim veniam dolor nulla ex",
+					"statusDesc": "velit",
+					"msgTypeValue": "reprehenderit Excepteur exercitation dolor",
+					"direction": "a",
+					"instrId": "conse",
+					"msgType": "Duis eu laborum esse tempor",
+					"status": "reprehenderit et",
+					"cdtrAcctOthrId": "aute dolore id deserunt dolore"
+				}
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgXml": "ipsum laborum voluptate",
+						"msgType": "volupta"
+					},
+					{
+						"msgXml": "velit",
+						"msgType": "laboris cillum"
+					},
+					{
+						"msgType": "ex minim qui",
+						"msgXml": "consequat reprehenderit cillum"
+					},
+					{
+						"msgXml": "officia id commodo",
+						"msgType": "sint fugiat"
+					},
+					{
+						"msgXml": "consequat elit tempor",
+						"msgType": "non"
+					},
+					{
+						"msgType": "cillum amet aute",
+						"msgXml": "sed veniam sit in adipisicing"
+					},
+					{
+						"msgType": "exercitation ",
+						"msgXml": "eiusmod dolore est Duis nisi"
+					},
+					{
+						"msgXml": "eiusmod dolor",
+						"msgType": "mollit officia consequat"
+					},
+					{
+						"msgXml": "Duis ea minim Lorem irure",
+						"msgType": "velit dolor laborum incididunt"
+					},
+					{
+						"msgXml": "dolore aliqu",
+						"msgType": "Ut non adipisicing aliquip officia"
+					},
+					{
+						"msgType": "ex irure nostrud ea Excepteur",
+						"msgXml": "nisi irure"
+					},
+					{
+						"msgXml": "incididun",
+						"msgType": "sint est labore qui pariatur"
+					},
+					{
+						"msgType": "pariatur sint",
+						"msgXml": "culpa ex reprehenderit"
+					},
+					{
+						"msgXml": "aute esse dolor enim",
+						"msgType": "non"
+					},
+					{
+						"msgXml": "",
+						"msgType": "ut tempor cupidatat"
+					},
+					{
+						"msgXml": "in cillum U",
+						"msgType": "aliqua cupidatat"
+					},
+					{
+						"msgType": "ullamco dolore fugiat Lorem velit",
+						"msgXml": "officia dolor adipisicing"
+					},
+					{
+						"msgType": "in ullamco labore Excepteur sint",
+						"msgXml": ""
+					},
+					{
+						"msgXml": "in reprehenderit Duis enim",
+						"msgType": "incididunt ea irure exercitation dolor"
+					},
+					{
+						"msgXml": "anim",
+						"msgType": "in"
+					}
+				],
+				"businessMessageSearch": {
+					"msgTypeValue": "non in dolore et",
+					"direction": "s",
+					"paymentSeqId": -9174122141180277000,
+					"cdtrAcctOthrId": "amet nostrud ea",
+					"status": "D",
+					"instrId": "anim ",
+					"statusDesc": "sed id aliqua eiusmod consequat",
+					"msgType": "pariatur ex",
+					"msgSeqId": -6791256142597145000,
+					"intrBkSttlmAmt": -53990047.230380747,
+					"sendRecvDate": "officia"
+				}
+			},
+			{
+				"businessMessageSearch": {
+					"direction": "e",
+					"msgType": "ut elit aute enim",
+					"msgSeqId": 7630140232315433000,
+					"sendRecvDate": "ad magna oc",
+					"cdtrAcctOthrId": "dolor",
+					"status": "sed commodo dolore",
+					"statusDesc": "adipisicing sunt",
+					"instrId": "exercitation laborum cupidatat",
+					"intrBkSttlmAmt": -61177613.16299979,
+					"msgTypeValue": "velit nostrud sed qui aute",
+					"paymentSeqId": 7557067531855831000
+				},
+				"businessMessageDetails": [
+					{
+						"msgXml": "culpa Except",
+						"msgType": "cupidatat magna in reprehenderit"
+					},
+					{
+						"msgType": "ex fugiat dolor sit",
+						"msgXml": "fugiat sunt tempor pariatur irure"
+					},
+					{
+						"msgXml": "et",
+						"msgType": "sunt in in in"
+					},
+					{
+						"msgType": "do id",
+						"msgXml": "occaecat aliquip ex"
+					},
+					{
+						"msgXml": "Duis in exercitation commodo",
+						"msgType": "tempor id cupidatat proident"
+					},
+					{
+						"msgType": "eiusmod",
+						"msgXml": "consequat proident exercitation"
+					},
+					{
+						"msgXml": "ipsum sit",
+						"msgType": "Duis adipisici"
+					},
+					{
+						"msgXml": "laboris consequat",
+						"msgType": "aliquip sunt"
+					},
+					{
+						"msgXml": "incididunt",
+						"msgType": "dolor consequat exercitation minim est"
+					},
+					{
+						"msgType": "nulla incididunt adi",
+						"msgXml": "reprehende"
+					},
+					{
+						"msgType": "velit deserunt tempor",
+						"msgXml": "ut"
+					},
+					{
+						"msgType": "in culpa",
+						"msgXml": "consequat"
+					},
+					{
+						"msgXml": "sunt sint ullamco veniam qui",
+						"msgType": "reprehenderit dolor eu velit"
+					},
+					{
+						"msgXml": "nostrud exercitation laboris magna deserunt",
+						"msgType": "in quis in laboris"
+					},
+					{
+						"msgType": "commodo aliqua in nulla ",
+						"msgXml": "officia i"
+					},
+					{
+						"msgType": "ex velit dolor ",
+						"msgXml": "est irure veniam id "
+					},
+					{
+						"msgType": "pariatur in ips",
+						"msgXml": "sunt in"
+					},
+					{
+						"msgType": "ad tempor nulla",
+						"msgXml": "enim in ullamco"
+					},
+					{
+						"msgType": "magna consequat incididunt Excepteur",
+						"msgXml": "id sunt fugiat dolor"
+					},
+					{
+						"msgType": "fugiat exercitation est sed ",
+						"msgXml": "ex esse"
+					}
+				]
+			},
+			{
+				"businessMessageSearch": {
+					"intrBkSttlmAmt": 85312386.83773273,
+					"msgSeqId": -5216129188257374000,
+					"cdtrAcctOthrId": "enim",
+					"paymentSeqId": -8312688914327671000,
+					"msgTypeValue": "sint",
+					"msgType": "aliquip ut",
+					"status": "id in eu irure ani",
+					"sendRecvDate": "nisi nulla amet",
+					"instrId": "et",
+					"statusDesc": "deserunt incididunt ad voluptate",
+					"direction": "e"
+				},
+				"businessMessageDetails": [
+					{
+						"msgXml": "qui ve",
+						"msgType": "dolore ut"
+					},
+					{
+						"msgType": "ut aliqua aute reprehenderit",
+						"msgXml": "ad ea consectetur exercitation minim"
+					},
+					{
+						"msgType": "Ut ex dolore",
+						"msgXml": "commodo sed sunt culpa"
+					},
+					{
+						"msgXml": "ullamco magna sed fugiat dolore",
+						"msgType": "irure in in laborum"
+					},
+					{
+						"msgType": "elit labore",
+						"msgXml": "Duis eiusmod culpa consectetur"
+					},
+					{
+						"msgXml": "nulla minim ni",
+						"msgType": "veniam"
+					},
+					{
+						"msgXml": "eu Lorem non nostrud",
+						"msgType": "dolore minim proident"
+					},
+					{
+						"msgXml": "cupidatat",
+						"msgType": "sint"
+					},
+					{
+						"msgXml": "eu ad non laboris",
+						"msgType": "tempor eiusmod ut ullamco voluptate"
+					},
+					{
+						"msgType": "dolore",
+						"msgXml": "minim tempor amet et aliquip"
+					},
+					{
+						"msgType": "Ut",
+						"msgXml": ""
+					},
+					{
+						"msgType": "nulla",
+						"msgXml": "ut"
+					},
+					{
+						"msgXml": "eu nostrud",
+						"msgType": "culpa sed amet"
+					},
+					{
+						"msgType": "pariatur ullamco",
+						"msgXml": "consequat"
+					},
+					{
+						"msgXml": "nulla sed sint fugiat eiusmod",
+						"msgType": "elit commodo pariatur"
+					},
+					{
+						"msgXml": "quis",
+						"msgType": "in"
+					},
+					{
+						"msgXml": "tempor id es",
+						"msgType": "culpa dolor in cillum Exc"
+					},
+					{
+						"msgType": "U",
+						"msgXml": "est i"
+					},
+					{
+						"msgXml": "id magna tempor la",
+						"msgType": "eiusmod"
+					},
+					{
+						"msgType": "eu labore anim",
+						"msgXml": "sint occaecat magna amet"
+					}
+				]
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgType": "eu dolore veniam est",
+						"msgXml": "nisi aliqua occaecat in sunt"
+					},
+					{
+						"msgXml": "laborum eiusmod ullamco",
+						"msgType": "sint"
+					},
+					{
+						"msgType": "elit minim commodo",
+						"msgXml": "ad "
+					},
+					{
+						"msgXml": "in incididunt Duis e",
+						"msgType": "reprehenderit tempor et mollit"
+					},
+					{
+						"msgXml": "id occaecat",
+						"msgType": "minim irure"
+					},
+					{
+						"msgXml": "tempor non in Duis",
+						"msgType": "deserunt dolore sint "
+					},
+					{
+						"msgType": "reprehenderit deserunt aliquip",
+						"msgXml": "elit tempor dolore aliqua aute"
+					},
+					{
+						"msgXml": "fugiat non esse nostrud et",
+						"msgType": "adipisicing laborum"
+					},
+					{
+						"msgType": "dolore id anim",
+						"msgXml": "fugiat"
+					},
+					{
+						"msgXml": "anim ad tempor",
+						"msgType": "Duis laborum"
+					},
+					{
+						"msgXml": "non",
+						"msgType": "est in"
+					},
+					{
+						"msgType": "cupidatat deserunt reprehenderit dolor ex",
+						"msgXml": "do enim consequat"
+					},
+					{
+						"msgType": "consequat",
+						"msgXml": "laborum sit"
+					},
+					{
+						"msgXml": "occaecat",
+						"msgType": "irure deserunt cupidatat"
+					},
+					{
+						"msgXml": "deserunt consectetur id Duis",
+						"msgType": "aliqua dolore et"
+					},
+					{
+						"msgType": "ea",
+						"msgXml": "ullamco ea commodo dolor laboris"
+					},
+					{
+						"msgXml": "dolore",
+						"msgType": "aliquip nostrud"
+					},
+					{
+						"msgXml": "labore qui",
+						"msgType": "qui officia elit"
+					},
+					{
+						"msgXml": "aute consequat dolor enim",
+						"msgType": "est"
+					},
+					{
+						"msgXml": "eu enim commodo",
+						"msgType": "eu laborum sint"
+					}
+				],
+				"businessMessageSearch": {
+					"direction": "v",
+					"statusDesc": "veniam in adipisicing reprehenderit",
+					"intrBkSttlmAmt": -25347230.404131429,
+					"msgType": "dolore dolore eu sed",
+					"msgSeqId": 5652907494988411000,
+					"instrId": "fugiat ea",
+					"cdtrAcctOthrId": "exercitation quis nostrud qui",
+					"sendRecvDate": "amet",
+					"status": "enim voluptate amet id dolor",
+					"paymentSeqId": -5896014086484767000,
+					"msgTypeValue": "nulla ex Lorem"
+				}
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgType": "in sunt ex nisi elit",
+						"msgXml": "nulla cupidatat tempor Excepteur veniam"
+					},
+					{
+						"msgType": "magna cillum ullamco",
+						"msgXml": "Lorem sint"
+					},
+					{
+						"msgXml": "elit deserunt aute",
+						"msgType": "aute"
+					},
+					{
+						"msgXml": "qui",
+						"msgType": "Ut dolore sed"
+					},
+					{
+						"msgType": "ut Ut velit ip",
+						"msgXml": "est culpa"
+					},
+					{
+						"msgType": "quis magna ipsum",
+						"msgXml": "eiusmod in pariatur enim"
+					},
+					{
+						"msgType": "reprehenderit veniam aute",
+						"msgXml": "Lorem incididunt consequat adipisicing"
+					},
+					{
+						"msgType": "tempor",
+						"msgXml": "deserunt voluptate eu"
+					},
+					{
+						"msgType": "ullamco",
+						"msgXml": "sunt en"
+					},
+					{
+						"msgXml": "laboris aliqua proident",
+						"msgType": "laboris in cupidatat est"
+					},
+					{
+						"msgXml": "dolor elit irure",
+						"msgType": "volup"
+					},
+					{
+						"msgXml": "deserunt magna",
+						"msgType": "sed sit nulla ullamco cupidatat"
+					},
+					{
+						"msgXml": "aliqua sit voluptate",
+						"msgType": "enim mollit deserunt "
+					},
+					{
+						"msgXml": "enim ut occaecat",
+						"msgType": "velit"
+					},
+					{
+						"msgXml": "id sunt exercitation et",
+						"msgType": "ad voluptate"
+					},
+					{
+						"msgXml": "voluptate ullamco ve",
+						"msgType": "eu sit commodo"
+					},
+					{
+						"msgXml": "pariatur ea",
+						"msgType": "anim commodo"
+					},
+					{
+						"msgType": "veniam do",
+						"msgXml": "aliquip culpa"
+					},
+					{
+						"msgType": "minim dolor labore nulla",
+						"msgXml": "amet"
+					},
+					{
+						"msgType": "Excepteur voluptate veniam ad anim",
+						"msgXml": "non"
+					}
+				],
+				"businessMessageSearch": {
+					"msgTypeValue": "esse",
+					"intrBkSttlmAmt": -76749681.78684689,
+					"statusDesc": "ut sit",
+					"paymentSeqId": -7787577077189767000,
+					"status": "aute pariatur",
+					"msgType": "veniam sit est incididunt non",
+					"sendRecvDate": "ea quis amet",
+					"cdtrAcctOthrId": "voluptate consequat ex d",
+					"direction": "f",
+					"instrId": "minim",
+					"msgSeqId": 894582010318848
+				}
+			},
+			{
+				"businessMessageSearch": {
+					"paymentSeqId": -6552513022630572000,
+					"instrId": "ipsum sint aliqua laboris et",
+					"statusDesc": "ad",
+					"msgType": "sint fugiat quis cillum",
+					"intrBkSttlmAmt": 95894212.88305697,
+					"status": "Excepteur laborum voluptate magna",
+					"direction": "n",
+					"msgSeqId": 8730907383446483000,
+					"msgTypeValue": "cillum",
+					"cdtrAcctOthrId": "conse",
+					"sendRecvDate": "eiusmod fugiat"
+				},
+				"businessMessageDetails": [
+					{
+						"msgXml": "Duis irure esse",
+						"msgType": "ut"
+					},
+					{
+						"msgXml": "s",
+						"msgType": "qui mollit nostrud"
+					},
+					{
+						"msgXml": "enim deserunt",
+						"msgType": "ipsum irure"
+					},
+					{
+						"msgXml": "do",
+						"msgType": "elit eu esse"
+					},
+					{
+						"msgType": "fugiat",
+						"msgXml": "exercitation veniam"
+					},
+					{
+						"msgType": "consequat adipisicing",
+						"msgXml": "reprehenderit cupidatat minim laborum dolore"
+					},
+					{
+						"msgXml": "Duis eu fugiat",
+						"msgType": "sint minim"
+					},
+					{
+						"msgXml": "exercitation ex tempor nostrud",
+						"msgType": "sint aliquip qui"
+					},
+					{
+						"msgXml": "Excepteur",
+						"msgType": "veniam nulla voluptate sint amet"
+					},
+					{
+						"msgXml": "Excepteur ullamc",
+						"msgType": "enim"
+					},
+					{
+						"msgType": "irure nulla",
+						"msgXml": "anim minim"
+					},
+					{
+						"msgType": "cillum amet consectetur dolor",
+						"msgXml": "consequat Duis consectetur irure dolor"
+					},
+					{
+						"msgType": "cillum",
+						"msgXml": "eu de"
+					},
+					{
+						"msgType": "dolor amet culpa",
+						"msgXml": "est culpa quis in et"
+					},
+					{
+						"msgType": "fugiat",
+						"msgXml": "minim occaecat labore sed"
+					},
+					{
+						"msgXml": "quis",
+						"msgType": "laborum nisi commodo"
+					},
+					{
+						"msgXml": "ea",
+						"msgType": "et sunt voluptate esse eiusmod"
+					},
+					{
+						"msgXml": "laboris Ut elit adipisicin",
+						"msgType": "exercitation i"
+					},
+					{
+						"msgType": "lab",
+						"msgXml": "dolor"
+					},
+					{
+						"msgType": "officia eu proident deserunt",
+						"msgXml": "ipsum"
+					}
+				]
+			},
+			{
+				"businessMessageSearch": {
+					"msgType": "nisi veniam nostrud",
+					"statusDesc": "ut aliqua",
+					"intrBkSttlmAmt": -10824883.484696553,
+					"instrId": "sed dolor ex",
+					"msgTypeValue": "pariatur mollit sint reprehenderit",
+					"status": "in culp",
+					"direction": "p",
+					"paymentSeqId": -3773542660335755300,
+					"cdtrAcctOthrId": "quis",
+					"msgSeqId": 5362604744414814000,
+					"sendRecvDate": "ea pariatur consequat"
+				},
+				"businessMessageDetails": [
+					{
+						"msgType": "esse id quis",
+						"msgXml": "non velit ipsum consectetur Ut"
+					},
+					{
+						"msgXml": "dolore aute qui pariatur proident",
+						"msgType": "minim eli"
+					},
+					{
+						"msgType": "nisi sunt reprehenderit",
+						"msgXml": "laboris in Ut dolore"
+					},
+					{
+						"msgXml": "cupidatat dolor",
+						"msgType": "qui ipsum labore"
+					},
+					{
+						"msgXml": "dolor esse non sunt dolore",
+						"msgType": "deserunt veniam reprehenderit sint anim"
+					},
+					{
+						"msgXml": "non commodo id dolore",
+						"msgType": "dolor ullamco amet"
+					},
+					{
+						"msgType": "in amet officia cupida",
+						"msgXml": "enim irure"
+					},
+					{
+						"msgXml": "Excepteur veniam",
+						"msgType": "in in commodo consectetur incididunt"
+					},
+					{
+						"msgXml": "sint irure aute",
+						"msgType": "adipisicing tempor est esse"
+					},
+					{
+						"msgXml": "minim occaecat officia ",
+						"msgType": "in esse exercitation cillum ut"
+					},
+					{
+						"msgType": "ex",
+						"msgXml": "enim labore id voluptate"
+					},
+					{
+						"msgXml": "ut non ",
+						"msgType": "consectetur sunt Duis"
+					},
+					{
+						"msgXml": "aute et ex",
+						"msgType": "ea ullamco enim"
+					},
+					{
+						"msgXml": "sit in",
+						"msgType": "in sint"
+					},
+					{
+						"msgXml": "ea",
+						"msgType": "dolore esse pariatur"
+					},
+					{
+						"msgXml": "dolore dolor ullamco non",
+						"msgType": "esse dolore Lorem nisi non"
+					},
+					{
+						"msgType": "aliquip",
+						"msgXml": "non pariatur consequat"
+					},
+					{
+						"msgType": "laboris adipisicing commodo in dolore",
+						"msgXml": "occaecat qui veniam voluptate sed"
+					},
+					{
+						"msgType": "in mollit ullamco enim",
+						"msgXml": "exercitation ut"
+					},
+					{
+						"msgType": "magna",
+						"msgXml": "sit laborum deserunt ea"
+					}
+				]
+			},
+			{
+				"businessMessageDetails": [
+					{
+						"msgType": "laborum",
+						"msgXml": "adipisicing nostrud sed"
+					},
+					{
+						"msgType": "Ut est venia",
+						"msgXml": "eu anim in ad "
+					},
+					{
+						"msgType": "cupidatat Ut ea consequat Duis",
+						"msgXml": "mollit adipisicing ut velit"
+					},
+					{
+						"msgXml": "ad elit aliquip sunt",
+						"msgType": "sint et minim cillum"
+					},
+					{
+						"msgType": "eiusmod magna ad esse Duis",
+						"msgXml": "ipsum"
+					},
+					{
+						"msgType": "consectetur adipisicing pariatur in",
+						"msgXml": "sint aute"
+					},
+					{
+						"msgXml": "ea culpa amet occ",
+						"msgType": "nulla deserunt do non"
+					},
+					{
+						"msgType": "deserunt proident ",
+						"msgXml": "veniam cillum quis voluptate dolore"
+					},
+					{
+						"msgXml": "laboris pariatur velit ad mollit",
+						"msgType": "do"
+					},
+					{
+						"msgXml": "Ut pariatur eu",
+						"msgType": "cupidatat aute"
+					},
+					{
+						"msgXml": "magna sed eu",
+						"msgType": "proident tempor"
+					},
+					{
+						"msgType": "eu",
+						"msgXml": "nostrud qui "
+					},
+					{
+						"msgXml": "minim officia est sed",
+						"msgType": "pr"
+					},
+					{
+						"msgType": "laborum",
+						"msgXml": "Excepteur est"
+					},
+					{
+						"msgType": "ipsum sed",
+						"msgXml": "occaecat ex nisi in"
+					},
+					{
+						"msgType": "commodo est et ipsum minim",
+						"msgXml": "velit aliquip"
+					},
+					{
+						"msgType": "aliqua irure magna Lorem amet",
+						"msgXml": "Duis velit s"
+					},
+					{
+						"msgXml": "ut cupidatat magna nostrud",
+						"msgType": "aliquip esse"
+					},
+					{
+						"msgXml": "exercitation proident",
+						"msgType": "culpa elit"
+					},
+					{
+						"msgXml": "sunt consequat nulla in commodo",
+						"msgType": "sunt dolor proident"
+					}
+				],
+				"businessMessageSearch": {
+					"msgType": "adipisicing",
+					"msgTypeValue": "do enim",
+					"msgSeqId": -2101478554431475700,
+					"direction": "u",
+					"intrBkSttlmAmt": 24295569.14234689,
+					"instrId": "minim dolor",
+					"statusDesc": "eu ut enim",
+					"status": "sunt ea incididunt magna",
+					"sendRecvDate": "officia",
+					"paymentSeqId": 8914199957111878000,
+					"cdtrAcctOthrId": "amet"
+				}
+			},
+			{
+				"businessMessageSearch": {
+					"cdtrAcctOthrId": "in sint do",
+					"instrId": "elit dol",
+					"sendRecvDate": "sunt sed",
+					"status": "deserunt ea",
+					"intrBkSttlmAmt": 85694466.36168698,
+					"msgTypeValue": "veniam in ut",
+					"statusDesc": "proident voluptate dolor",
+					"msgSeqId": -6281997433672294000,
+					"direction": "n",
+					"msgType": "anim Lorem",
+					"paymentSeqId": -7176739227401847000
+				},
+				"businessMessageDetails": [
+					{
+						"msgXml": "aute",
+						"msgType": "ex tempor"
+					},
+					{
+						"msgXml": "ut Duis",
+						"msgType": "occaecat"
+					},
+					{
+						"msgXml": "dolor anim minim",
+						"msgType": "elit ut adipisicing"
+					},
+					{
+						"msgXml": "pariatur dolore Ut incididun",
+						"msgType": "laboris Duis"
+					},
+					{
+						"msgXml": "ea officia eu nisi aute",
+						"msgType": "exercitation anim fugiat"
+					},
+					{
+						"msgType": "irure velit",
+						"msgXml": "nostrud"
+					},
+					{
+						"msgType": "dolore sit qui",
+						"msgXml": "reprehenderit deserunt commodo Lorem"
+					},
+					{
+						"msgXml": "c",
+						"msgType": "sit"
+					},
+					{
+						"msgType": "consequat fugiat dolore minim in",
+						"msgXml": "dolor labore elit et sint"
+					},
+					{
+						"msgXml": "cupidatat aliqua dolor commodo officia",
+						"msgType": "tempor elit ut voluptate nulla"
+					},
+					{
+						"msgType": "dolor ex",
+						"msgXml": "sint deserunt consectetur Duis adipisicing"
+					},
+					{
+						"msgXml": "nostrud",
+						"msgType": "ea Duis reprehenderit minim"
+					},
+					{
+						"msgXml": "aute",
+						"msgType": "esse Duis in consectetur nostrud"
+					},
+					{
+						"msgType": "dolor anim",
+						"msgXml": "ut consectetur"
+					},
+					{
+						"msgXml": "eiusmod minim eu officia labore",
+						"msgType": "tempor aliqua"
+					},
+					{
+						"msgType": "ut aliquip",
+						"msgXml": "amet sint ut cupidatat"
+					},
+					{
+						"msgXml": "cillum",
+						"msgType": "qui quis in irure"
+					},
+					{
+						"msgType": "voluptate",
+						"msgXml": "deserunt"
+					},
+					{
+						"msgXml": "Ut nulla",
+						"msgType": "Duis"
+					},
+					{
+						"msgType": "mollit",
+						"msgXml": "Excepteur cillum ipsum est nostrud"
+					}
+				]
+			},
+			{
+				"businessMessageSearch": {
+					"direction": "e",
+					"statusDesc": "elit qui aute laboris dolor",
+					"msgSeqId": 7968889887147205000,
+					"sendRecvDate": "sit nisi sint ut",
+					"msgType": "cupidatat Duis",
+					"status": "aliqua cillum",
+					"instrId": "commodo",
+					"intrBkSttlmAmt": 59440347.69787952,
+					"cdtrAcctOthrId": "qui",
+					"msgTypeValue": "cupidatat adipisici",
+					"paymentSeqId": -6581808554658636000
+				},
+				"businessMessageDetails": [
+					{
+						"msgType": "magna i",
+						"msgXml": "eiusmod deserunt dolore exercitation anim"
+					},
+					{
+						"msgType": "nisi in id",
+						"msgXml": "adi"
+					},
+					{
+						"msgXml": "consectetur labore cillum laborum pro",
+						"msgType": "reprehenderit qui eu"
+					},
+					{
+						"msgXml": "in nulla voluptate consectetur",
+						"msgType": "anim nulla Duis dolor velit"
+					},
+					{
+						"msgXml": "mollit quis",
+						"msgType": "nisi"
+					},
+					{
+						"msgType": "magna irure qui ad",
+						"msgXml": "dolore Excepteur culpa"
+					},
+					{
+						"msgType": "aute enim ut eiusmod Duis",
+						"msgXml": "aliquip"
+					},
+					{
+						"msgXml": "irure",
+						"msgType": "ut aliqua"
+					},
+					{
+						"msgXml": "tempor laborum nostrud ut",
+						"msgType": "officia commodo reprehenderi"
+					},
+					{
+						"msgType": "id dolor",
+						"msgXml": "adipisicing cillum exercitation enim ipsum"
+					},
+					{
+						"msgType": "nulla",
+						"msgXml": "ni"
+					},
+					{
+						"msgXml": "",
+						"msgType": "ex Ut non"
+					},
+					{
+						"msgXml": "commodo",
+						"msgType": "anim nisi"
+					},
+					{
+						"msgXml": "ip",
+						"msgType": "commodo culpa"
+					},
+					{
+						"msgType": "fugiat ipsum Duis nostrud",
+						"msgXml": "velit do occaecat"
+					},
+					{
+						"msgXml": "anim officia labore dolore",
+						"msgType": "do fugiat"
+					},
+					{
+						"msgXml": "mollit nostrud in in laborum",
+						"msgType": "proident adi"
+					},
+					{
+						"msgXml": "id aliquip",
+						"msgType": "culpa eiusmod elit irure"
+					},
+					{
+						"msgXml": "Ut id magna elit",
+						"msgType": "nisi ut ad non ame"
+					},
+					{
+						"msgType": "commodo dolor elit",
+						"msgXml": "adipis"
+					}
+				]
+			},
+			{
+				"businessMessageSearch": {
+					"sendRecvDate": "culpa",
+					"statusDesc": "exercitation anim in",
+					"instrId": "enim",
+					"cdtrAcctOthrId": "tempor sunt",
+					"msgSeqId": 8843971721685172000,
+					"direction": "U",
+					"intrBkSttlmAmt": -87851260.87903139,
+					"status": "amet voluptate",
+					"msgTypeValue": "aliquip aute sunt cupidatat",
+					"paymentSeqId": 8781035909176283000,
+					"msgType": "eu sunt pariat"
+				},
+				"businessMessageDetails": [
+					{
+						"msgType": "amet minim",
+						"msgXml": "in do"
+					},
+					{
+						"msgType": "irure",
+						"msgXml": "et occaecat nisi aute adipisicing"
+					},
+					{
+						"msgType": "proident",
+						"msgXml": "cupidatat Excepteur"
+					},
+					{
+						"msgType": "in sit nisi",
+						"msgXml": "veniam"
+					},
+					{
+						"msgType": "ut nisi cupidatat labore",
+						"msgXml": "culpa elit occaecat et"
+					},
+					{
+						"msgType": "mollit irure aliqua tempor in",
+						"msgXml": "mollit sed et labore"
+					},
+					{
+						"msgXml": "in eu sunt sint",
+						"msgType": "mollit aliqua"
+					},
+					{
+						"msgXml": "aliqua dolore adipisicing et",
+						"msgType": "ea cupidatat ullamco nostrud non"
+					},
+					{
+						"msgXml": "elit nulla",
+						"msgType": "fugiat"
+					},
+					{
+						"msgType": "ex est culpa aute ipsum",
+						"msgXml": "dolore Duis "
+					},
+					{
+						"msgXml": "magna",
+						"msgType": "ea"
+					},
+					{
+						"msgType": "aute eiusmod do labore",
+						"msgXml": "dolore culpa in"
+					},
+					{
+						"msgXml": "fugiat",
+						"msgType": "elit officia enim"
+					},
+					{
+						"msgXml": "occaecat consectetur sed ad esse",
+						"msgType": "mollit exercitation veniam"
+					},
+					{
+						"msgType": "cupidatat",
+						"msgXml": "sint "
+					},
+					{
+						"msgXml": "esse sunt sint eu",
+						"msgType": "quis consectetur dolore commodo"
+					},
+					{
+						"msgXml": "anim in sunt id",
+						"msgType": "deser"
+					},
+					{
+						"msgXml": "offi",
+						"msgType": "minim mollit in vol"
+					},
+					{
+						"msgXml": "nulla ut",
+						"msgType": "ex"
+					},
+					{
+						"msgXml": "ea minim in",
+						"msgType": "laboris"
+					}
+				]
+			}
+		],
+		"velit_8": "fugiat"
+	},
+	"consequatb": -33563143.965161319,
+	"exercitationb8": -70171375.17136552
+}
+    AdminMessageSearchDetailResponse:
+      value:
+        "AdminMessageSearchDetail": [
+             {
+             "adminMessageResponse": {
+             "msgSeqId": 80303,
+             "msgId": "580094",
+             "msgType": "Admi.004 - System Event Notification",
+             "direction": "Incoming",
+             "status": "ACTC",
+             "sendRecvDate": "10/05/2021",
+             "eventCode": "994 - Prefunded Balance Breach Notification"
+             },
+             "adminMessageDetails": {
+             "msgSeqId": 80303,
+             "msgType": "Admi.004 - System Event Notification",
+             "msgXml": "<!-- 994 Tenant 1 Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021092300000000ZFA6896602</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-09-23T10:23:45</head:CreDt>\r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>994</ne:EvtCd>\r\n <ne:EvtParam>580094</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>PAIGE ROWE994</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>PAYMENT RJCT</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>99999990</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>M2021042610211110101BRT00000001</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>2500</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-09-02T00:29:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
+             }
+             },
+             {
+             "adminMessageResponse": {
+             "msgSeqId": 80283,
+             "msgId": "580093",
+             "msgType": "Admi.004 - System Event Notification",
+             "direction": "Incoming",
+             "status": "ACTC",
+             "sendRecvDate": "10/05/2021",
+             "eventCode": "993 - Available Prefunded Balance Warning Notification"
+             },
+             "adminMessageDetails": {
+             "msgSeqId": 80283,
+             "msgType": "Admi.004 - System Event Notification",
+             "msgXml": "<!-- 993 Tenant 1 EXCEEDED Sample administration messages from TCH RTP Administration Message V 2.1 October 2016.pdf -->\r\n<!-- Example Connectivity Status Broadcast message (XML Format) -->\r\n<Message xmlns=\"urn:tch\" xmlns:head=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.01\" xmlns:ne=\"urn:iso:std:iso:20022:tech:xsd:admi.004.001.02\">\r\n <AppHdr>\r\n <head:Fr>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>11111111111</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:Fr>\r\n <head:To>\r\n <head:FIId>\r\n <head:FinInstnId>\r\n <head:ClrSysMmbId>\r\n <head:MmbId>99999999999</head:MmbId>\r\n </head:ClrSysMmbId>\r\n </head:FinInstnId>\r\n </head:FIId>\r\n </head:To>\r\n <head:BizMsgIdr>B2021073000000000ZHA6896403</head:BizMsgIdr>\r\n <head:MsgDefIdr>admi.004.001.02</head:MsgDefIdr>\r\n <head:CreDt>2021-07-30T14:52:45</head:CreDt>\r\n \r\n </AppHdr>\r\n<SystemNotificationEvent>\r\n <ne:SysEvtNtfctn>\r\n <ne:EvtInf>\r\n <ne:EvtCd>993</ne:EvtCd>\r\n <ne:EvtParam>580093</ne:EvtParam>\r\n <ne:EvtParam>Notification</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>10211110101</ne:EvtParam>\r\n <ne:EvtParam>B ROWE993</ne:EvtParam>\r\n <ne:EvtParam>USD</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>EXCEEDED</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>100000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>1000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>5000000</ne:EvtParam>\r\n\t\t\t<ne:EvtParam>95000000</ne:EvtParam>\r\n\t\t\t<ne:EvtTm>2021-07-30T14:52:28</ne:EvtTm>\r\n </ne:EvtInf>\r\n </ne:SysEvtNtfctn>\r\n</SystemNotificationEvent>\r\n</Message>"
+             }
+             }
+             ]
