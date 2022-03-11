@@ -28,11 +28,10 @@
 # the delivery of this work
 ################################################################################
 header:
-  productName: "Payments Exchange"
-  productionDescription: "Payments Exchange: RTP is a flexible, web-based solution that streamlines RTP message and response handling for complete end-to-end RTP payment processing. This innovative tool gives your institution the ability to access the RTP network and ensures operational efficiency and security. This solution: Supports TCH’s latest strategy for greater adoption and ubiquity onto the network Supports real-time postings to the FI core Complies with ISO 20022 standards and RTP system operating rules"
+  productName: "Payments Exchange: RTP"
+  productionDescription: "Payments Exchange: RTP is a flexible, web-based solution that streamlines RTP message and response handling for complete end-to-end RTP payment processing. This innovative tool gives your institution the ability to access the RTP network and ensures operational efficiency and security"
 
-  whoIsItFor: "To meet this consumer demand, RTP®, The Clearing House’s Real-Time Payment network launched—connecting the payment with payment      data     together in a single transaction, settling instantaneously. RTP is Fiserv’s standard offering for direct RTP participation. The solution enables
-    financial institutions to connect to the RTP network and track their payments easily through a web-enabled UI."
+  whoIsItFor: "Payments Exchange: RTP is for financial institutions who want to engage in direct RTP participation. You can connect to TCH’s RTP network and track your payments easily through a web-enabled UI."
 
   image: 
     link: "/assets/images/Fiserv_Logo.jpg"
