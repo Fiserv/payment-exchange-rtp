@@ -1,10 +1,10 @@
 # This is custom file to hide/ignore any document file(s) or directory(s).
 
 # Docs tutorials directory
-migration/
+tutorials/
 
 # This should all file and subdirectory under versioning dir
 versioning/**
 
 # Declaring one particular markdown file to ignore
-# migration.md
+api-nomenclature.md

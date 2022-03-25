@@ -1,10 +1,10 @@
 {
-  "title": "Payment Exchange RTP",
-  "name": "PaymentExchangeRTP",
+  "title": "Payments Exchange RTP",
+  "name": "PaymentsExchangeRTP",
   "brand": "Fiserv",
   "brandLogoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Fiserv_Logo.jpg",
   "solution": ["financial-institutions"],
-  "brandDescription": "REPLACE ME > Fiserv, Inc. is a global provider of payments and financial services technology solutions. The Company provides account processing and digital banking solutions, card issuer processing and network services, payments, e-commerce, merchant acquiring and processing, and the Clover cloud-based point-of-sale solution. The Company operates through three segments: Merchant Acceptance (Acceptance), Financial Technology (Fintech) and Payments and Network (Payments).",
+  "brandDescription": "RTP is a flexible, web-based solution that streamlines RTP message and response handling for complete end-to-end RTP payment processing. This innovative tool gives your institution the ability to access the RTP network and ensures operational efficiency and security.",
   "categories": [
     {
       "name": "businessTypes",
@@ -23,23 +23,24 @@
         "version": "1.0.0",
         "versionType": "major",
         "releaseNotesPath": "/release-notes/release-notes-1.0.0.md",
-        "apiSpecFileNames": ["api-1.0.0"]
+        "apiSpecFileNames": ["openapi-1.0.0"]
       }
   ],
   "product": {
     "featured": true,
     "logoURL": "https://raw.githubusercontent.com/Fiserv/Developer-Portal-Tenant-API/develop/assets/images/Portal_Logo.png",
-    "description": "To onboard properly into the Developer Studio as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "longDescription":"To onboard properly into the Developer Studi as a tenant each product must support these APIs so that we can retrieve product specific API specifications and documentation.",
-    "apiSpecification": "/v1/apis/PaymentExchangeRTP",
-    "layout": "/v1/layouts/PaymentExchangeRTP",
-    "documentation": "/v1/docs/PaymentExchangeRTP",
-    "documenttree": "/v1/docs/PaymentExchangeRTP",
-    "documenttreeV2": "/v2/docs/PaymentExchangeRTP",
+    "description": "REPLACE ME",
+    "longDescription":"REPLACE ME",
+    "apiSpecification": "/v1/apis/PaymentsExchangeRTP",
+    "layout": "/v1/layouts/PaymentsExchangeRTP",
+    "documentation": "/v1/docs/PaymentsExchangeRTP",
+    "documenttree": "/v1/docs/PaymentsExchangeRTP",
+    "documenttreeV2": "/v2/docs/PaymentsExchangeRTP",
+    "sandbox": "/v2/docs/PaymentsExchangeRTP",
     "feature":[
       {
         "name": "sandBox",
-        "value": true
+        "value": false
       },
       {
         "name": "plugins",
@@ -57,19 +58,19 @@
   },
    "supportConfig": [{ 
 		"bug": {
-			"label": "bug,REPLACEME",
+			"label": "bug,PaymentsExchangeRTP",
 			"template": "bug.md",
-			"assignees": ""
+			"assignees": "fiserv-mhaar"
 		},
 		"feedback": {
-			"label": "feedback,REPLACEME",
+			"label": "feedback,PaymentsExchangeRTP",
 			"template": "feedback.md",
-			"assignees": ""
+			"assignees": "fiserv-mhaar"
 		},
 		"enhancement": {
-			"label": "enhancement,REPLACEME",
+			"label": "enhancement,PaymentsExchangeRTP",
 			"template": "feature.md",
-			"assignees": ""
+			"assignees": "fiserv-mhaar"
 		}
 	}]
 }
