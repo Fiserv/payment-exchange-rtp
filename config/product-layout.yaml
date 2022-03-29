@@ -27,32 +27,31 @@
 # are granted or extended by this work or 
 # the delivery of this work
 ################################################################################
-header:
-  productName: "PaymentsExchangeRTP"
+header: 
+  image: 
+    altText: "Payments Exchange: RTP™"
+    link: /assets/images/Fiserv_Logo.jpg
+  productName: PaymentsExchangeRTP
   productionDescription: "Payments Exchange: RTP is a flexible, web-based solution that streamlines RTP message and response handling for complete end-to-end RTP payment processing. This innovative tool gives your institution the ability to access the RTP network and ensures operational efficiency and security."
   whoIsItFor: "Payments Exchange: RTP is for financial institutions who want to engage in direct RTP participation. You can connect to TCH’s RTP network and track your payments easily through a web-enabled UI."
-
-  image: 
-    link: "/assets/images/Fiserv_Logo.jpg"
-    altText: "Payments Exchange: RTP™"
-steps:  
-  learnSteps:
-    - title: Learn
-      description: >
-        Follow our documentation and easy to use examples to build your own mobile or web integrated online applications. 
-      link:
-  buildSteps:
-    - title: Build
-      description: >
-        Get your application up and running with our proprietary integration tools and developer keys. 
-      link:
-  validateSteps:
-    - title: API Explorer
-      description: >
-        Interact with our live api interface for real time responses to the developed application. 
-      link:
-  deploySteps:
-    - title: Deploy
-      description: >
-        Deploy your applications in our testing environment for quality assurance testing.  Once ready promote your application to our production environment. 
-      link:
+steps: 
+  buildSteps: 
+    - 
+      description: "Get your application up and running with our proprietary integration tools and developer keys. \n"
+      link: ~
+      title: Build
+  deploySteps: 
+    - 
+      description: "Deploy your applications in our testing environment for quality assurance testing.  Once ready promote your application to our production environment. \n"
+      link: ~
+      title: Deploy
+  learnSteps: 
+    - 
+      description: "Follow our documentation and easy to use examples to build your own mobile or web integrated online applications. \n"
+      link: ~
+      title: Learn
+  validateSteps: 
+    - 
+      description: "Interact with our live api interface for real time responses to the developed application. \n"
+      link: ~
+      title: "API Explorer"
