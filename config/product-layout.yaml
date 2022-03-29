@@ -34,7 +34,7 @@ header:
 
   image: 
     link: "/assets/images/Fiserv_Logo.jpg"
-    altText: Payments Exchange: RTP™
+    altText: "Payments Exchange: RTP™"
 steps:  
   learnSteps:
     - title: Learn
