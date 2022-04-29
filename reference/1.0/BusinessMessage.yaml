@@ -1,0 +1,379 @@
+openapi: 3.0.1
+info:
+  title: PX API
+  description: 'This YAML file supports Business Message within the PX Api Application'
+  version: 1.0.0
+servers:
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: http://swaggerhub.frms.pvt/virts/PX_ORG/BusinessMessageSearch/1.0.0
+- url: http://localhost:8081/px-api/v1
+tags:
+- name: BusinessMessage
+  description:  Business Message
+paths:
+  /business-message/page-config:
+    get:
+      tags:
+      - Business Message
+      summary: Initialize Business Messages Page
+      operationId: pageConfig
+      responses:
+        200:
+          description: Business Messages Configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessMessageConfig'
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
+  /business-message/messages:
+    get:
+      tags:
+      -  Message
+      summary: Search Business Message 
+      operationId: searchBusinessMessage
+      parameters:
+        - $ref: '#/components/parameters/accNum'
+        - $ref: '#/components/parameters/instrId'
+        - $ref: '#/components/parameters/msgName'
+        - $ref: '#/components/parameters/direction'
+        - $ref: '#/components/parameters/amount'
+        - $ref: '#/components/parameters/fromDate'
+        - $ref: '#/components/parameters/toDate'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/order'
+      responses:
+        200:
+          description: Search Business Message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessMessageSearchResult'
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+  /business-message/message-with-details:
+    get:
+      tags:
+      -  Message 
+      summary: Search Business Message With Details 
+      operationId: searchBusinessMessageWithDetails
+      parameters:
+        - $ref: '#/components/parameters/accNum'
+        - $ref: '#/components/parameters/instrId'
+        - $ref: '#/components/parameters/msgName'
+        - $ref: '#/components/parameters/direction'
+        - $ref: '#/components/parameters/amount'
+        - $ref: '#/components/parameters/fromDate'
+        - $ref: '#/components/parameters/toDate'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/order'
+      responses:
+        200:
+          description: Search Business Message With Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessMessageSearchWithDetailsResult'
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+  /business-message/account-number:
+    get:
+      tags:
+      -  Message
+      summary: get Decrypted Credit Acct Number 
+      operationId: get Decrypted Credit Acct Number
+      parameters:
+        - $ref: '#/components/parameters/msgSeqId'
+        - $ref: '#/components/parameters/msgName'
+        - $ref: '#/components/parameters/direction'
+      
+      responses:
+        200:
+          description: get Decrypted Credit Acct Number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecryptedCreditActNum'
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+  /business-message/details-xml:
+    get:
+      tags:
+      - Business Message Details
+      summary: retrieve Business Message Details
+      operationId: businessMessageDetails
+      parameters:
+        - $ref: '#/components/parameters/msgSeqId'
+      responses:
+        200:
+          description: Results returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessMessageDetails'
+      x-codegen-request-body-name: body
+  /business-message/interlinked-xml:
+    get:
+      tags:
+      - Interlinked Business messages
+      summary: Get interlinked Business messages
+      operationId: getInterlinkedBusinessMsg
+      parameters:
+        - $ref: '#/components/parameters/msgSeqId'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterlinkedBusinessRequestResult'
+        500:
+          description: Internal Server error on xroads
+          content: {}
+      x-codegen-request-body-name: body
+security:
+  - bearerAuth: []
+components:
+  schemas:
+    BusinessMessageConfig:
+      type: object
+      properties:
+        i18n:
+          $ref: 'GlobalApi.yaml#/components/schemas/I18n'
+        labelValueBean:
+          $ref: 'GlobalApi.yaml#/components/schemas/LabelValueBean'
+    BusinessMessageSearchResult: 
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+        businessMessageResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessMessageSearch'
+      title: BusinessMessageSearchResult
+    BusinessMessageSearchWithDetailsResult: 
+      type: object
+      properties:
+        businessMessageWithDetails:
+          $ref: '#/components/schemas/BusinessMessageWithDetails'
+      title: BusinessMessageSearchWithDetailsResult
+    BusinessMessageWithDetails:
+      type: object
+      properties:
+        businessMessageWithDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessMessageWithDetail'
+      title: BusinessMessageWithDetails  
+    BusinessMessageWithDetail:
+      type: object
+      properties:
+        businessMessageSearch:
+          $ref: '#/components/schemas/BusinessMessageSearch'
+        businessMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/BusinessMessageDetails'
+      title: BusinessMessageWithDetail
+    PaymentDetails:
+      type: object
+      properties:
+        accNumber:
+          type: string
+        instrId:
+          type: string
+        amount:
+          type: number
+      title: PaymentDetails
+    MessageDetails:
+      type: object
+      properties:
+        messageName:
+          type: string
+        messageDirection:
+          type: string
+        messageStatus:
+          type: string
+      title: MessageDetails
+    BusinessMessageSearch:
+      type: object
+      properties:
+        paymentSeqId:
+          type: integer
+          format: int64
+        msgSeqId:
+          type: integer
+          format: int64
+        cdtrAcctOthrId:
+          type: string
+        instrId:
+          type: string
+        msgType:
+          type: string
+        msgTypeValue:
+          type: string          
+        direction:
+          type: string
+          minLength: 1
+          maxLength: 1
+        status:
+          type: string
+        statusDesc:
+          type: string
+        sendRecvDate:
+          type: string
+        intrBkSttlmAmt:
+          type: number
+      title: BusinessMessageSearch
+    DecryptedCreditActNum:
+      type: object
+      properties:
+        decryptAcct:
+          type: string
+      title: decryptedCreditActNum
+    BusinessMessageDetails:
+      type: object
+      properties:
+        msgXml:
+          type: string
+        msgType:
+          type: string
+      title: BusinessMessageDetails
+    InterlinkedBusinessRequest:
+      type: object
+      properties:
+       msgSeqId:
+          type: integer
+          format: int64
+       msgType:
+          type: string
+       msgXml:
+          type: string
+      title: InterlinkedBusinessRequest
+    InterlinkedBusinessRequestResult:
+      type: object
+      properties:
+        interlinkedBusinessRequests:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterlinkedBusinessRequest'
+      title: InterlinkedBusinessRequestResult
+  securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    accNum:
+      name: accNum
+      in: query
+      description: accNum
+      required: false
+      schema:
+        type: string
+        pattern:  '^[a-zA-Z0-9-,.]*$'
+        maxLength: 34
+    instrId:
+      name: instrId
+      in: query
+      description: instrId
+      required: false
+      schema:
+        type: string
+        pattern: '^[a-zA-Z0-9]*$'
+        maxLength: 35
+    msgName:
+      name: msgName
+      in: query
+      description: msgName
+      required: false
+      schema:
+        type: string
+        maxLength: 40
+        enum: [CAMT.029, CAMT.035, CAMT.056, PACS.002, PACS.008]
+    direction:
+      name: direction
+      in: query
+      description: direction
+      required: false
+      schema:
+        type: string
+        maxLength: 1
+        enum: [I, O]
+    amount:
+      name: amount
+      in: query
+      description: amount
+      required: false
+      schema:
+        type: number
+    fromDate:
+      name: fromDate
+      in: query
+      description: fromDate
+      required: false
+      schema:
+        type: string
+        format: date
+    toDate:
+      name: toDate
+      in: query
+      description: toDate
+      required: false
+      schema:
+        type: string
+        format: date
+    pageIndex:
+      name: pageIndex
+      in: query
+      description: pageIndex
+      required: true
+      schema:
+        type: integer
+        format: int32
+    pageSize:
+      name: pageSize
+      in: query
+      description: pageSize
+      required: true
+      schema:
+        type: integer
+        format: int32
+    orderBy:
+      name: orderBy
+      in: query
+      description: orderBy
+      required: false
+      schema:
+        type: string
+    order:
+      name: order
+      in: query
+      description: order
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+    msgSeqId:
+      name: msgSeqId
+      in: query
+      description: msgSeqId
+      required: true
+      schema:
+        type: integer
+        format: int64    

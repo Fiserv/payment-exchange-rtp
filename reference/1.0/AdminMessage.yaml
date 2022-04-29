@@ -1,0 +1,307 @@
+openapi: 3.0.1
+info:
+  title: PX API
+  description: 'This YAML file supports Admin Message within the PX Api Application'
+  version: 1.0.0
+servers:
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: http://swaggerhub.frms.pvt/virts/PX_ORG/AdminMessageApi/1.0.0
+- url: http://localhost:8081/px-api/v1
+tags:
+- name: AdminMessage
+  description:  Admin Message
+paths:
+  /admin-message/page-config:
+    get:
+      tags:
+      - Admin Message Details
+      summary: Initialize Admin Message Page
+      operationId: pageConfig
+      responses:
+        200:
+          description: Admin Message Page Configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminMessageConfig'
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
+  /admin-message/messages:
+    get:
+      tags:
+      -  Message
+      summary: Search Admin Message 
+      operationId: searchAdminMessage
+      parameters:
+        - $ref: '#/components/parameters/messageStatus'
+        - $ref: '#/components/parameters/messageName'
+        - $ref: '#/components/parameters/messageDirection'
+        - $ref: '#/components/parameters/eventCode'
+        - $ref: '#/components/parameters/fromDate'
+        - $ref: '#/components/parameters/toDate'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/order'
+        
+      responses:
+        200:
+          description: Search Admin Message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchAdminMessageResult'
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body
+      
+  /admin-message/messages-search-details:
+    get:
+      tags:
+      -  Message
+      summary: Search Admin Message details
+      operationId: searchAdminMessageDetails
+      parameters:
+        - $ref: '#/components/parameters/messageStatus'
+        - $ref: '#/components/parameters/messageName'
+        - $ref: '#/components/parameters/messageDirection'
+        - $ref: '#/components/parameters/eventCode'
+        - $ref: '#/components/parameters/fromDate'
+        - $ref: '#/components/parameters/toDate'
+        - $ref: '#/components/parameters/pageIndex'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/order'
+        
+      responses:
+        200:
+          description: Search Admin Message Details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminMessageSearchDetails'
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body
+  /admin-message/details-xml/{msgSeqId}:
+    get:
+      tags:
+      - Admin Message Details
+      summary: retrieve Admin Message Details
+      operationId: adminMessageDetails
+      parameters:
+        - $ref: '#/components/parameters/msgSeqId'
+      responses:
+        200:
+          description: Results returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminMessageDetails'
+        204:
+          description: No Content.
+        500:
+          description: Internal Server error on RTP
+          content: {}
+      x-codegen-request-body-name: body
+  /admin-message/interlinked-xml/{msgSeqId}:
+    get:
+      tags:
+      - Interlinked Admin Messages
+      summary: Interlinked Admin Messages
+      operationId: getInterlinkedMessage
+      parameters:
+        - $ref: '#/components/parameters/msgSeqId'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterlinkedAdminMessageResult'
+
+      x-codegen-request-body-name: body
+security:
+  - bearerAuth: []
+components:
+  schemas:
+    AdminMessageConfig:
+      type: object
+      properties:
+        i18n:
+          $ref: 'GlobalApi.yaml#/components/schemas/I18n'
+        labelValueBean:
+          $ref: 'GlobalApi.yaml#/components/schemas/LabelValueBean'
+    SearchAdminMessageResult: 
+      type: object
+      properties:
+        totalCount:
+          type: integer
+          format: int64
+        adminMessageResponse:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageResponse'
+      title: SearchAdminMessageResult 
+    AdminMessageSearchDetails:
+      type: object
+      properties:
+        AdminMessageSearchDetail:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageSearchDetail'
+      title: AdminMessageSearchDetails 
+    AdminMessageSearchDetail:
+      type: object
+      properties:
+        adminMessageResponse:
+          $ref: '#/components/schemas/AdminMessageResponse'
+        adminMessageDetails:
+          $ref: '#/components/schemas/AdminMessageDetails'   
+      title: AdminMessageSearchDetail 
+    AdminMessageResponse:
+      type: object
+      properties:
+        msgSeqId:
+          type: integer
+          format: int64
+        msgId:
+          type: string
+        msgType:
+          type: string
+        direction:
+          type: string
+        status:
+          type: string
+        sendRecvDate:
+          type: string
+        eventCode:
+          type: string
+       
+      title: AdminMessageRequest
+    AdminMessageDetails:
+      type: object
+      properties:
+        msgSeqId:
+          type: integer
+          format: int64
+        msgType:
+          type: string
+        msgXml:
+          type: string
+      title: AdminMessageDetails
+    AdminMessageDetailsResult:
+      type: object
+      properties:
+        AdminMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageDetails'
+    InterlinkedAdminMessageResult:
+      type: object
+      properties:
+        AdminMessageDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdminMessageDetails'
+  securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    msgSeqId:
+      name: msgSeqId
+      in: path
+      description: MessageSeqId
+      required: true
+      schema:
+        type: integer
+        format: int64  
+    msgType:
+      name: msgType
+      in: query
+      description: Search by Message Type
+      schema:
+        type: string
+    messageStatus:
+      name: messageStatus
+      in: query
+      description: Search by Message Status
+      required: false
+      schema:
+        type: string
+        enum: [ACTC, RCVD, RJCT, SENT]
+    messageName:
+      name: messageName
+      in: query
+      description: Search by Message Name
+      required: false
+      schema:
+        type: string
+        enum: [ADMI.002, ADMI.004, ADMN.001, ADMN.002, ADMN.003, ADMN.004, ADMN.005, ADMN.006]
+    messageDirection:
+      name: messageDirection
+      in: query
+      description: Search by Message Direction
+      required: false
+      schema:
+        type: string
+        enum: [I, O]
+    eventCode:
+      name: eventCode
+      in: query
+      description: Search by Message Event Code
+      schema:
+        type: string
+        enum: ["960", "961", "971", "972", "975", "976", "981", "982", "993", "994", "996", "998", "999"]
+    fromDate:
+      name: fromDate
+      in: query
+      description: Search by Date
+      required: false
+      schema:
+        type: string
+        format: date
+    toDate:
+      name: toDate
+      in: query
+      description: Search by Date
+      required: false
+      schema:
+        type: string
+        format: date
+    pageIndex:
+      name: pageIndex
+      in: query
+      description: Page Index
+      required: false
+      schema:
+        type: integer
+    pageSize:
+      name: pageSize
+      in: query
+      description: Page Size
+      required: false
+      schema:
+        type: integer
+    orderBy:
+      name: orderBy
+      in: query
+      description: Order By
+      required: false
+      schema:
+        type: string
+    order:
+      name: order
+      in: query
+      description: Page Size
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
