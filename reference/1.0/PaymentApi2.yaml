@@ -12,6 +12,23 @@ tags:
 - name: Payments
   description:  Payments
 paths:
+  /payment/page-config:
+    get:
+      tags:
+      - Payments
+      summary: Initialize Payments Page
+      operationId: pageConfig
+      responses:
+        200:
+          description: Outgoing Payments Configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingPaymentPageConfig'
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
   /payment/outgoing-payments:
     post:
       tags:
@@ -61,6 +78,89 @@ paths:
           description: Internal Server error on rtp
           content: {}
       x-codegen-request-body-name: body
+  /payment/payment-details/{externalReqId}:
+    get:
+      tags:
+      - Payment Details
+      summary: Payment Details
+      operationId: paymentEnquiry
+      parameters:
+        - $ref: '#/components/parameters/externalReqId'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentDetailsResponse'
+        204:
+          description: No Content,No Records to display.
+
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body  
+  /payment/validate/debtor-number:
+    post:
+      tags:
+      - Outgoing Payment
+      summary: Validate Debtor Account Number
+      operationId: validateDebtorAccount
+      requestBody:
+        description: Validate Debtor Account Number Request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoreValidateRequest'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoreValidateResponse'
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
+  /payment/validate/bank-number:
+    get:
+      tags:
+      - Outgoing Payment
+      summary: Validate Creditor ABA Bank Number
+      operationId: validateBankNumber
+      parameters:
+        - $ref: '#/components/parameters/creditorBankNum'
+      responses:
+        200:
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditorBankNumValidateResponse'
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body
+  /payment/debitor-number:
+    get:
+      tags:
+      -  Outgoing Payment
+      summary: get Decrypted Core Acct Number 
+      operationId: getDecryptedAcctNumber
+      parameters:
+        - $ref: '#/components/parameters/paymentSeqId'
+      responses:
+        200:
+          description: get Decrypted Core Acct Number
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecryptedActNumber'
+        500:
+          description: Internal Server error on rtp
+          content: {}
+      x-codegen-request-body-name: body    
 security:
   - bearerAuth: []
 components:
