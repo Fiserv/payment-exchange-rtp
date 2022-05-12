@@ -36,7 +36,7 @@
     "documentation": "/v1/docs/PaymentsExchangeRTP",
     "documenttree": "/v1/docs/PaymentsExchangeRTP",
     "documenttreeV2": "/v2/docs/PaymentsExchangeRTP",
-    "sandbox": "/v2/docs/PaymentsExchangeRTP",
+    "sandbox": "/v1/sandboxrun/PaymentsExchangeRTP",
     "feature":[
       {
         "name": "sandBox",
