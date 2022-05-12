@@ -64,31 +64,6 @@ paths:
 security:
   - bearerAuth: []
 components:
-  schemas:
-    OutgoingPaymentPageConfig:
-      type: object
-      properties:
-        members:
-          type: array
-          items:
-            $ref: 'GlobalApi.yaml#/components/schemas/LabelValue'
-        accountTypes:
-          type: array
-          items:
-            $ref: 'GlobalApi.yaml#/components/schemas/LabelValue'
-        customerTypes:
-          type: array
-          items:
-            $ref: 'GlobalApi.yaml#/components/schemas/LabelValue'
-        states:
-          type: array
-          items:
-            $ref: 'GlobalApi.yaml#/components/schemas/LabelValue'
-        i18n:
-          $ref: 'GlobalApi.yaml#/components/schemas/I18n'
-        labelValueBean:
-          $ref: 'GlobalApi.yaml#/components/schemas/LabelValueBean'
-          
     paymentSearchRequest:
       type: object
       properties:
