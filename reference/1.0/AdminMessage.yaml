@@ -129,14 +129,6 @@ paths:
 security:
   - bearerAuth: []
 components:
-  schemas:
-    AdminMessageConfig:
-      type: object
-      properties:
-        i18n:
-          $ref: 'GlobalApi.yaml#/components/schemas/I18n'
-        labelValueBean:
-          $ref: 'GlobalApi.yaml#/components/schemas/LabelValueBean'
     SearchAdminMessageResult: 
       type: object
       properties:
