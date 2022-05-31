@@ -1,6 +1,6 @@
 # Getting Started
 
-## Welcome to Payments Exchange: RTP!
+## Welcome to Payments Exchange: RTP! Real Time Payments
 
 To get started with the Payments Exchange: RTP APIs, follow these steps:
  
