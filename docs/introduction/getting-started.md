@@ -2,7 +2,7 @@
 
 ## Welcome to Payments Exchange: RTP! Real Time Payments
 
-To get started with the Payments Exchange: RTP APIs, follow these steps:
+To get started with the Payments Exchange RTP APIs, follow these steps:
  
 ## Register
 
@@ -36,9 +36,6 @@ The refresh token should be used within the configurable refresh interval (set d
 ## Refresh an Access Token
 
 To renew the access token the standard OAuth refresh token process should be used.
-
-
-
 
 ___
 
