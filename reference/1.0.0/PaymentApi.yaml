@@ -16,6 +16,8 @@ paths:
     post:
       tags:
       - Payment Search
+      x-group-name: Payment Search
+      x-proxy-name: outgoing-payments
       summary: Payment Search
       operationId: searchPayments
       requestBody:
@@ -39,6 +41,8 @@ paths:
     post:
       tags:
       - Create Payment
+      x-group-name: Create Payment
+      x-proxy-name: payments
       summary: Create Payment 
       operationId: createPayment
       requestBody:
@@ -73,7 +77,7 @@ components:
           pattern: '^[a-zA-Z0-9-,.]*$'
           maxLength: 34
           example: '3456-9080-980'
-          description: The customerâ€™s account to be debited
+          description: The customer’s account to be debited
         stage:
           type: string
           example: 'CLEARING'
@@ -91,7 +95,7 @@ components:
         externalRefId:
           type: string
           maxLength: 35
-          description: Identifies the external source applicationâ€™s external payment ID; only valid for external sources
+          description: Identifies the external source application’s external payment ID; only valid for external sources
           example: RTP-1693
         transactionId:
           type: string
@@ -184,12 +188,12 @@ components:
           type: integer
           format: int64
           maxLength: 70
-          description: Identifies the external source applicationâ€™s external payment ID; only valid for external sources
+          description: Identifies the external source application’s external payment ID; only valid for external sources
           example: RTP-3910
         debtorName:
           type: string
           maxLength: 140
-          description: The debtorâ€™s name
+          description: The debtor’s name
           example: John Smith
         debtorPostalAddress:
           $ref: '#/components/schemas/PostalAddress'
@@ -198,7 +202,7 @@ components:
         debtorAccount:
           type: string
           maxLength: 34
-          description: The debtorâ€™s account number
+          description: The debtor’s account number
           example: 1357924680
         customerType:
           type: string
@@ -214,7 +218,7 @@ components:
           type: integer
           format: int64
           maxLength: 9
-          description: The creditorâ€™s bank ABA number
+          description: The creditor’s bank ABA number
           example: 021000021
         creditorBankName:
           type: string
@@ -242,7 +246,7 @@ components:
           type: string
           maxLength: 20
           example: CC
-          description: The external source applicationâ€™s identification
+          description: The external source application’s identification
         accountType:
           type: string
           maxLength: 70
@@ -258,7 +262,7 @@ components:
         memberId:
           type: string
           maxLength: 9
-          description: Debtor Agent MMB ID(From UI â€“ default from the tenant) Validate against the member and tenant table. DBTR_AGT_MMB_ID
+          description: Debtor Agent MMB ID(From UI – default from the tenant) Validate against the member and tenant table. DBTR_AGT_MMB_ID
         settlementDate:
           type: string
           description: only for Service/Batch
@@ -367,15 +371,15 @@ components:
           example: 13589674
         status:
           type: string
-          description: Identifies the â€˜stageâ€™ of the payment and the payment status
+          description: Identifies the ‘stage’ of the payment and the payment status
           example: CLEARING - SENT
         debtorName:
           type: string
-          description: The debtorâ€™s name
+          description: The debtor’s name
           example: John Smith
         debtorAccount:
           type: string
-          description: The customerâ€™s account to be debited
+          description: The customer’s account to be debited
           example: 1357924680
         amount:
           type: string
@@ -451,7 +455,7 @@ components:
         externalPaymentId:
           type: string
           maxLength: 35
-          description: Identifies the external source applicationâ€™s external payment ID; only valid for external sources
+          description: Identifies the external source application’s external payment ID; only valid for external sources
           example: RTP-3910
         paymentSeqId:
           type: string
