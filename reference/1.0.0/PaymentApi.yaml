@@ -12,11 +12,11 @@ tags:
 - name: Payments
   description:  Payments
 paths:
-  /payment/outgoing-payments/Real Time Payments:
+  /payment/outgoing-payments:
     post:
       tags:
       - Payment Search
-      x-group-name: Payment Search Real Time Payments
+      x-group-name: Payment Search
       x-proxy-name: outgoing-payments
       summary: Payment Search
       operationId: searchPayments
@@ -40,7 +40,7 @@ paths:
   /payment/payments:    
     post:
       tags:
-      - Create Payment REAL TIME PAYMENTS
+      - Create Payment
       x-group-name: Create Payment 
       x-proxy-name: payments
       summary: Create Payment 
@@ -77,10 +77,10 @@ components:
           pattern: '^[a-zA-Z0-9-,.]*$'
           maxLength: 34
           example: '3456-9080-980'
-          description: The customer’s account to be debited Real Time Payments
+          description: The customer’s account to be debited
         stage:
           type: string
-          example: 'CLEARING REAL TIME PAYMENTS'
+          example: 'CLEARING'
           description: Identifies where the payment is in the process flow
         status:
           type: string
@@ -133,7 +133,7 @@ components:
         messageId:
           type: string
           maxLength: 35
-          description: Identifies the clearing system member REAL TIME PAYMENTS
+          description: Identifies the clearing system member
           example: 589648565
         PaymentRequest:
           type: array
@@ -164,7 +164,7 @@ components:
           type: string
           maxLength: 9
           description: Identifies the clearing system member 
-          example: 5896585 REAL TIME PAYMENTS
+          example: 5896585
         memoNotes:
           type: string
           maxLength: 150
@@ -356,7 +356,7 @@ components:
          type: integer
          format: int64
          example: 120
-         description: Total number of records Real Time Payments
+         description: Total number of records
         PaymentResponse:
           type: array
           items:
@@ -372,11 +372,11 @@ components:
         status:
           type: string
           description: Identifies the ‘stage’ of the payment and the payment status
-          example: CLEARING - SENT REAL TIME PAYMENTS
+          example: CLEARING - SENT
         debtorName:
           type: string
-          description: The debtor’s name REAL TIME PAYMENTS
-          example: John Smith REAL TIME PAYMENTS
+          description: The debtor’s name
+          example: John Smith
         debtorAccount:
           type: string
           description: The customer’s account to be debited
@@ -396,7 +396,7 @@ components:
         transactionId:
           type: string
           description: In RTP, the transaction ID is used to reference the first message in a transaction event
-          example: 2536 REAL TIME PAYMENTS
+          example: 2536
       title: paymentSearchResponse    
     PostalAddress:
       type: object
