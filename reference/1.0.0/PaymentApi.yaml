@@ -51,6 +51,9 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PaymentRequests'
+              examples:
+              Sample Create Payment:
+                $ref: '#/components/examples/PaymentRequests'
       responses:
         201:
           description: Payment added successfully
@@ -69,6 +72,7 @@ security:
   - bearerAuth: []
 components:
   schemas:
+  
     paymentSearchRequest:
       type: object
       properties:
@@ -604,7 +608,43 @@ components:
         format: int64
       example: 135792468      
   securitySchemes:
+  
     bearerAuth:            
       type: http
       scheme: bearer
       bearerFormat: JWT
+  examples:
+    PaymentRequests:
+      value:
+        messageId: "589648565"
+        PaymentRequest:
+            memberId:   5896585
+            memoNotes:  "Contacted customer for clarification"
+            settlementDate: 04/20/2022
+            paymentAmount:  1000000.00
+            currency:   "USD"
+            paymentInfoId:  "RTP-3910"
+            debtorName: "John Smith"
+            debtorPostalAddress:
+                streetName:"6769 PROSPECT WAY"
+                zipCode:"75063"
+                city:"Irving"
+                state:"TX"
+                country:"USA"
+            debtorAccount:  "1357924680"
+            customerType:   "Business"
+            endToEndId: "1239805"
+            creditorBankABANumber:  021000021
+            creditorBankName:   "Chase"
+            creditorName:   "Jane Smith"
+            creditorPostalAddress:
+                streetName:"6769 PROSPECT WAY"
+                zipCode:"75063"
+                city:"Irving"
+                state:"TX"
+                country:"USA"
+            creditorAccount:    "8642975310"
+            additionalCreditorInformation:  "Inv 1285901"
+            source: "CC"
+            accountType:    "DDA"
+  
