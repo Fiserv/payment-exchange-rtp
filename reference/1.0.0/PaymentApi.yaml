@@ -62,7 +62,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaymentResponses'
               examples:
-                Sample Create Payment Response:
+                Sample Create Payment:
                     $ref: '#/components/examples/PaymentResponses'
         400:
           description: Payment already exists.
