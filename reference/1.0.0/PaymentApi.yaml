@@ -71,8 +71,7 @@ paths:
           description: Internal Server error on rtp
           content: {}
       x-codegen-request-body-name: body
-security:
-  - bearerAuth: []
+
 components:
   schemas:
   
@@ -621,7 +620,7 @@ components:
       value:
         messageId: "589648565"
         PaymentRequest:
-            memberId:   5896585
+         -  memberId:   5896585
             memoNotes:  "Contacted customer for clarification"
             settlementDate: 04/20/2022
             paymentAmount:  1000000.00
