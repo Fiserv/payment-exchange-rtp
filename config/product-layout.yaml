@@ -34,6 +34,7 @@ header:
   productName: PaymentsExchangeRTP
   productionDescription: "Payments Exchange: RTP is a flexible, web-based solution that streamlines RTP message and response handling for complete end-to-end RTP payment processing. This innovative tool gives your institution the ability to access the RTP network and ensures operational efficiency and security."
   whoIsItFor: "Payments Exchange: RTP is for financial institutions who want to engage in direct RTP participation. You can connect to TCH’s RTP network and track your payments easily through a web-enabled UI."
+getStarted: /docs/introduction/getting-started.md
 steps: 
   buildSteps: 
     - 
