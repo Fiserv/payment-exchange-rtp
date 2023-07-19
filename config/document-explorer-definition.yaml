@@ -27,6 +27,10 @@
 # are granted or extended by this work or 
 # the delivery of this work
 ################################################################################
+- sections:
+  - title: Getting Started
+    link: docs/introduction/getting-started.md
+    open: true
 
 - sections:
     - title: Introduction
@@ -35,10 +39,7 @@
       sections:
         - title: Overview
           link: docs/introduction/overview.md
-- sections:
-  - title: Getting Started
-    link: docs/introduction/getting-started.md
-    open: true
+
 - sections:
   - title: Getting Started Test
     link: docs/getting-started.md
